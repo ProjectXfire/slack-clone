@@ -1,10 +1,12 @@
 "use client";
 
-import type { SignInFlow } from "../_types";
+import type { SignInFlow } from "../../_types";
 import { useState } from "react";
-import { AuthContainer, SignInCard, SignUpCard } from "../_components";
+import AuthContainer from "../containers/AuthContainer";
+import SignInCard from "../cards/SignInCard";
+import SignUpCard from "../cards/SignUpCard";
 
-function AuthPage(): JSX.Element {
+function Auth(): JSX.Element {
   const [authCard, setAuthCard] = useState<SignInFlow>("singIn");
 
   return (
@@ -17,4 +19,4 @@ function AuthPage(): JSX.Element {
     </AuthContainer>
   );
 }
-export default AuthPage;
+export default Auth;

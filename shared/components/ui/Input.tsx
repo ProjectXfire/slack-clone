@@ -23,10 +23,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input";
 
 const InputIcon = React.forwardRef<HTMLInputElement, InputPropsWithIcon>(
-  ({ className, type, icon, ...props }, ref) => {
+  ({ className, type, icon, disabled, ...props }, ref) => {
     return (
-      <div className="flex items-center gap-2 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-within:ring-1">
-        <input type={type} className={cn("w-full h-full", className)} ref={ref} {...props} />
+      <div
+        className={cn(
+          "flex items-center gap-2 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-within:ring-1",
+          disabled && "opacity-50"
+        )}
+      >
+        <input
+          type={type}
+          className={cn("w-full h-full", className)}
+          disabled={disabled}
+          ref={ref}
+          {...props}
+        />
         {icon}
       </div>
     );
