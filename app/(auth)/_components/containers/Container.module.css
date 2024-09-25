@@ -1,0 +1,15 @@
+.auth-container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--bg-light-color);
+  border-radius: 10px;
+}
