@@ -1,6 +1,7 @@
 "use client";
 
 import type { SignUpDto } from "../../_dtos";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaLock, FaUser } from "react-icons/fa6";
@@ -29,6 +30,8 @@ interface Props {
 }
 
 function SignUpCard({ onClick }: Props): JSX.Element {
+  const [isPending, setIsPending] = useState(false);
+
   const form = useForm<SignUpDto>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -57,7 +60,12 @@ function SignUpCard({ onClick }: Props): JSX.Element {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputIcon placeholder="Email" {...field} icon={<FaUser />} />
+                    <InputIcon
+                      placeholder="Email"
+                      icon={<FaUser />}
+                      {...field}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,6 +82,7 @@ function SignUpCard({ onClick }: Props): JSX.Element {
                       placeholder="Password"
                       icon={<FaLock />}
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -91,17 +100,20 @@ function SignUpCard({ onClick }: Props): JSX.Element {
                       placeholder="Confirm you password"
                       icon={<FaLock />}
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button size="lg">Continue</Button>
+            <Button type="submit" name="signup" size="lg" disabled={isPending}>
+              Continue
+            </Button>
           </form>
         </Form>
         <Separator className={styles.separator} />
-        <OAuthLogin />
+        <OAuthLogin isPending={isPending} onSignIn={(value) => setIsPending(value)} />
         <ToggleAuth
           text="Already have an account?"
           actionText="click here"

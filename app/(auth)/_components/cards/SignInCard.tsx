@@ -1,6 +1,7 @@
 "use client";
 
 import type { SignInDto } from "../../_dtos";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaLock, FaUser } from "react-icons/fa6";
@@ -29,6 +30,8 @@ interface Props {
 }
 
 function SignInCard({ onClick }: Props): JSX.Element {
+  const [isPending, setIsPending] = useState(false);
+
   const form = useForm<SignInDto>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -56,7 +59,12 @@ function SignInCard({ onClick }: Props): JSX.Element {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputIcon placeholder="Email" {...field} icon={<FaUser />} />
+                    <InputIcon
+                      placeholder="Email"
+                      icon={<FaUser />}
+                      {...field}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,17 +81,20 @@ function SignInCard({ onClick }: Props): JSX.Element {
                       placeholder="Password"
                       icon={<FaLock />}
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button size="lg">Continue</Button>
+            <Button type="submit" name="singin" size="lg" disabled={isPending}>
+              Continue
+            </Button>
           </form>
         </Form>
         <Separator className={styles.separator} />
-        <OAuthLogin />
+        <OAuthLogin isPending={isPending} onSignIn={(value) => setIsPending(value)} />
         <ToggleAuth text="Don't have an account?" actionText="click here" onActionClick={onClick} />
       </CardContent>
     </Card>
