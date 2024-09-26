@@ -1,20 +1,20 @@
 "use client";
 
-import type { SignInFlow } from "../../_types";
+import { SignInFlow } from "../../_types";
 import { useState } from "react";
 import AuthContainer from "../containers/AuthContainer";
 import SignInCard from "../cards/SignInCard";
 import SignUpCard from "../cards/SignUpCard";
 
 function Auth(): JSX.Element {
-  const [authCard, setAuthCard] = useState<SignInFlow>("singIn");
+  const [authCard, setAuthCard] = useState<SignInFlow>(SignInFlow.signIn);
 
   return (
     <AuthContainer>
-      {authCard === "singIn" ? (
-        <SignInCard onClick={() => setAuthCard("signUp")} />
+      {authCard === SignInFlow.signIn ? (
+        <SignInCard onClick={() => setAuthCard(SignInFlow.signUp)} />
       ) : (
-        <SignUpCard onClick={() => setAuthCard("singIn")} />
+        <SignUpCard onClick={() => setAuthCard(SignInFlow.signIn)} />
       )}
     </AuthContainer>
   );

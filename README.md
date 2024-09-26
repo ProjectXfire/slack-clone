@@ -16,7 +16,7 @@ pnpm dev
 bun dev
 ```
 
-Convex sever
+Convex dev server
 
 ```bash
 npx convex dev

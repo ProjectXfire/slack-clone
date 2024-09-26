@@ -1,10 +1,14 @@
 "use client";
 
 import type { SignInDto } from "../../_dtos";
+import { SignInFlow } from "../../_types";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaLock, FaUser } from "react-icons/fa6";
+import { TriangleAlert } from "lucide-react";
 import { signInSchema } from "../../_schemas";
 import styles from "./Card.module.css";
 import {
@@ -14,6 +18,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CustomAlert,
   Form,
   FormControl,
   FormField,
@@ -31,6 +36,10 @@ interface Props {
 
 function SignInCard({ onClick }: Props): JSX.Element {
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState("");
+
+  const { signIn } = useAuthActions();
+  const router = useRouter();
 
   const form = useForm<SignInDto>({
     resolver: zodResolver(signInSchema),
@@ -41,7 +50,16 @@ function SignInCard({ onClick }: Props): JSX.Element {
   });
 
   const onSubmit = (authValues: SignInDto): void => {
-    console.log(authValues);
+    setIsPending(true);
+    const { email, password } = authValues;
+    signIn("password", { email, password, flow: SignInFlow.signIn })
+      .then(() => {
+        router.replace("/");
+      })
+      .catch(() => {
+        setError("Invalid email or password");
+        setIsPending(false);
+      });
   };
 
   return (
@@ -91,6 +109,14 @@ function SignInCard({ onClick }: Props): JSX.Element {
             <Button type="submit" name="singin" size="lg" disabled={isPending}>
               Continue
             </Button>
+            {error && (
+              <CustomAlert
+                title="Error"
+                description={error}
+                variant="destructive"
+                icon={<TriangleAlert />}
+              />
+            )}
           </form>
         </Form>
         <Separator className={styles.separator} />

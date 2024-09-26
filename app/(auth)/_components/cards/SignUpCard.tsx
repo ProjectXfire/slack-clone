@@ -1,12 +1,16 @@
 "use client";
 
 import type { SignUpDto } from "../../_dtos";
+import { SignInFlow } from "../../_types";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FaLock, FaUser } from "react-icons/fa6";
-import { signInSchema } from "../../_schemas";
+import { signUpSchema } from "../../_schemas";
 import styles from "./Card.module.css";
+import { FaLock, FaUser } from "react-icons/fa6";
+import { TriangleAlert } from "lucide-react";
 import {
   Button,
   Card,
@@ -14,6 +18,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CustomAlert,
   Form,
   FormControl,
   FormField,
@@ -31,9 +36,13 @@ interface Props {
 
 function SignUpCard({ onClick }: Props): JSX.Element {
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState("");
+
+  const { signIn } = useAuthActions();
+  const router = useRouter();
 
   const form = useForm<SignUpDto>({
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -42,7 +51,16 @@ function SignUpCard({ onClick }: Props): JSX.Element {
   });
 
   const onSubmit = (authValues: SignUpDto): void => {
-    console.log(authValues);
+    setIsPending(true);
+    const { email, password } = authValues;
+    signIn("password", { email, password, flow: SignInFlow.signUp })
+      .then(() => {
+        router.replace("/");
+      })
+      .catch(() => {
+        setError("Something went wrong!");
+        setIsPending(false);
+      });
   };
 
   return (
@@ -110,6 +128,14 @@ function SignUpCard({ onClick }: Props): JSX.Element {
             <Button type="submit" name="signup" size="lg" disabled={isPending}>
               Continue
             </Button>
+            {error && (
+              <CustomAlert
+                title="Error"
+                description={error}
+                variant="destructive"
+                icon={<TriangleAlert />}
+              />
+            )}
           </form>
         </Form>
         <Separator className={styles.separator} />
