@@ -9,6 +9,7 @@ const PASSWORD_VALIDATIONS = z
 
 export const signUpSchema = z
   .object({
+    name: z.string(),
     email: z.string().email(),
     password: PASSWORD_VALIDATIONS,
     confirmPassword: z.string(),

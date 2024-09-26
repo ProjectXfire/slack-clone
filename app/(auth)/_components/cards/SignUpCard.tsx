@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "../../_schemas";
 import styles from "./Card.module.css";
 import { FaLock, FaUser } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
 import { TriangleAlert } from "lucide-react";
 import {
   Button,
@@ -44,6 +45,7 @@ function SignUpCard({ onClick }: Props): JSX.Element {
   const form = useForm<SignUpDto>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -52,8 +54,8 @@ function SignUpCard({ onClick }: Props): JSX.Element {
 
   const onSubmit = (authValues: SignUpDto): void => {
     setIsPending(true);
-    const { email, password } = authValues;
-    signIn("password", { email, password, flow: SignInFlow.signUp })
+    const { name, email, password } = authValues;
+    signIn("password", { name, email, password, flow: SignInFlow.signUp })
       .then(() => {
         router.replace("/");
       })
@@ -74,13 +76,30 @@ function SignUpCard({ onClick }: Props): JSX.Element {
           <form className={styles.form} onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <InputIcon
+                      placeholder="Full name"
+                      icon={<FaUser />}
+                      {...field}
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <InputIcon
                       placeholder="Email"
-                      icon={<FaUser />}
+                      icon={<MdEmail />}
                       {...field}
                       disabled={isPending}
                     />
