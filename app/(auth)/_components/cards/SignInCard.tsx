@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FaLock, FaUser } from "react-icons/fa6";
+import { FaLock } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
 import { TriangleAlert } from "lucide-react";
 import { signInSchema } from "../../_schemas";
 import styles from "./Card.module.css";
@@ -79,7 +80,7 @@ function SignInCard({ onClick }: Props): JSX.Element {
                   <FormControl>
                     <InputIcon
                       placeholder="Email"
-                      icon={<FaUser />}
+                      icon={<MdEmail />}
                       {...field}
                       disabled={isPending}
                     />
