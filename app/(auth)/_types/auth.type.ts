@@ -1,1 +1,4 @@
-export type SignInFlow = "singIn" | "signUp";
+export enum SignInFlow {
+  signIn = "signIn",
+  signUp = "signUp",
+}
