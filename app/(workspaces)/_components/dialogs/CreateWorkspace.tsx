@@ -1,8 +1,12 @@
 "use client";
 
 import type { CreateWorkspaceDto } from "../../_dtos";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createWorkspaceSchema } from "../../_schemas";
+import { useCreateWorkspace } from "../../_services";
+import { useToast } from "@/shared/hooks/use-toast";
 import { useCreateWorkspaceModal } from "../../_stores";
 import styles from "./Dialog.module.css";
 import {
@@ -19,14 +23,12 @@ import {
   FormMessage,
   Input,
 } from "@/shared/components";
-import { createWorkspaceSchema } from "../../_schemas";
-import { useCreateWorkspace } from "../../_services";
-import { useToast } from "@/shared/hooks/use-toast";
 
 function CreateWorkspace(): JSX.Element {
   const [openModal, setOpenModal] = useCreateWorkspaceModal();
   const { mutate, isPending } = useCreateWorkspace();
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<CreateWorkspaceDto>({
     resolver: zodResolver(createWorkspaceSchema),
@@ -48,7 +50,8 @@ function CreateWorkspace(): JSX.Element {
             duration: 2000,
           });
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+          router.push(`/workspaces/${data}`);
           handleClose();
           toast({
             variant: "default",
@@ -56,6 +59,7 @@ function CreateWorkspace(): JSX.Element {
             description: "Successful workspace created",
             duration: 2000,
           });
+          setOpenModal(false);
         },
       }
     );

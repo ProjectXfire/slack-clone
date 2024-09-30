@@ -1,6 +1,10 @@
+export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as CreateWorkspace } from "./dialogs/CreateWorkspace";
 export { default as DialogContainer } from "./dialogs/DialogContainer";
 export { default as StartingLoader } from "./loader/StartingLoader";
+export { default as Sidebar } from "./sidebar/Sidebar";
+export { default as SidebarButton } from "./sidebar/SidebarButton";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
 export { default as Toolbar } from "./toolbar/Toolbar";
+export { default as WorkspaceSwitcher } from "./workspace-switcher/WorkspaceSwitcher";
 export { default as Workspace } from "./workspace/Workspace";

@@ -1,4 +1,4 @@
-import { Toolbar } from "@/app/(workspaces)/_components";
+import { Toolbar, WorkspaceContent } from "@/app/(workspaces)/_components";
 
 interface Props {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ function WorkSpaceLayout({ children }: Props) {
   return (
     <main>
       <Toolbar />
-      {children}
+      <WorkspaceContent>{children}</WorkspaceContent>
     </main>
   );
 }

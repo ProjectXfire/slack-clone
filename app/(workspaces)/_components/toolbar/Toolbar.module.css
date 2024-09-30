@@ -30,3 +30,8 @@
   flex: 1;
   justify-content: flex-end;
 }
+
+.info button {
+  width: 40px;
+  padding: 0;
+}

@@ -8,7 +8,7 @@ import { useGetOneWorkspace } from "../../_services";
 
 function Toolbar(): JSX.Element {
   const woskspaceId = useWorkspaceId();
-  const { data, isLoading } = useGetOneWorkspace(woskspaceId);
+  const { data } = useGetOneWorkspace(woskspaceId);
 
   return (
     <header className={styles.container}>
@@ -20,7 +20,7 @@ function Toolbar(): JSX.Element {
         </Button>
       </div>
       <div className={styles.info}>
-        <Button variant="ghost" type="button" name="search-workspace">
+        <Button variant="transparent" type="button" name="search-workspace">
           <Info />
         </Button>
       </div>
