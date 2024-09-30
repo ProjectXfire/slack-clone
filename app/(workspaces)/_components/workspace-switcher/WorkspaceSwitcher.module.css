@@ -1,0 +1,47 @@
+.ws-switcher-trigger {
+  max-width: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.ws-switcher-active {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ws-switcher-active p:nth-of-type(1) {
+  max-width: 220px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.ws-switcher-item {
+  display: flex;
+  gap: 10px;
+}
+
+.ws-switcher-item__name {
+  max-width: 220px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ws-switcher-item__icon {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.ws-switcher-item__icon--ws {
+  background-color: var(--bg-light-color);
+}
+
+.ws-switcher-item__icon--create {
+  background-color: var(--bg-color);
+  color: white;
+}

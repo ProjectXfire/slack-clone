@@ -17,7 +17,7 @@ function Workspace() {
     if (!data) router.replace("/");
   }, [data, isLoading, router]);
 
-  if (isLoading || !data) return <StartingLoader />;
+  if (isLoading || !data) return <StartingLoader reduceHeightIn={50} />;
 
   return <div>Workspace {data.name}</div>;
 }

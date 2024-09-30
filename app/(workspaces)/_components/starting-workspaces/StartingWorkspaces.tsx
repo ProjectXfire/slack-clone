@@ -26,6 +26,6 @@ function StartingWorkspaces(): JSX.Element {
 
   if (isLoading) return <StartingLoader />;
 
-  return <></>;
+  return <StartingLoader />;
 }
 export default StartingWorkspaces;

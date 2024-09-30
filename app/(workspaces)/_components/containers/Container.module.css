@@ -1,0 +1,4 @@
+.workspace-content {
+  height: calc(100dvh - 50px);
+  display: flex;
+}
