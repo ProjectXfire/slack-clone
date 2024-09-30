@@ -1,0 +1,9 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialog-form__action {
+  align-self: flex-end;
+}
