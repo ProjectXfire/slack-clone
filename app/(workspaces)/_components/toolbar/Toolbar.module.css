@@ -1,0 +1,32 @@
+.container {
+  height: 50px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-color);
+  color: var(--bg-light-color);
+}
+
+.space {
+  flex: 1;
+}
+
+.search {
+  min-width: 280px;
+  max-width: 642px;
+  flex-shrink: 0;
+  flex-grow: 2;
+}
+
+.search__button {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.info {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
