@@ -1,24 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { useGetOneWorkspace } from "../../_services";
-import StartingLoader from "../loader/StartingLoader";
 import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "../../_hooks";
+import { useGetOneWorkspace } from "../../_services";
+import StartingLoader from "../loader/StartingLoader";
 
 function Workspace() {
   const workspaceId = useWorkspaceId();
-  const { data, isLoading } = useGetOneWorkspace(workspaceId);
+  const { workspace, isLoading, error } = useGetOneWorkspace(workspaceId);
 
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
-    if (!data) router.replace("/");
-  }, [data, isLoading, router]);
+    if (error) router.push("/error");
+    if (!workspace) router.replace("/");
+  }, [workspace, isLoading, router, error]);
 
-  if (isLoading || !data) return <StartingLoader reduceHeightIn={50} />;
+  if (isLoading || !workspace) return <StartingLoader reduceHeightIn={50} />;
 
-  return <div>Workspace {data.name}</div>;
+  return <div>Workspace {workspace.name}</div>;
 }
 export default Workspace;

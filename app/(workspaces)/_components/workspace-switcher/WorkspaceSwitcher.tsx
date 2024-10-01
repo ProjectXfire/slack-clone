@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useGetOneWorkspace, useGetWorkspaces } from "../../_services";
 import { useCreateWorkspaceModal } from "../../_stores";
+import { useWorkspaceId } from "../../_hooks";
 import { formatName } from "@/shared/utils";
 import styles from "./WorkspaceSwitcher.module.css";
-import { useWorkspaceId } from "../../_hooks";
+import { Plus } from "lucide-react";
 import {
   Button,
   DropdownMenu,
@@ -15,18 +16,15 @@ import {
   DropdownMenuTrigger,
   Loader,
 } from "@/shared/components";
-import { Plus } from "lucide-react";
 
 function WorkspaceSwitcher(): JSX.Element {
   const workspaceId = useWorkspaceId();
-  const { data: workspace, isLoading: workspaceIsLoading } = useGetOneWorkspace(workspaceId);
-  const { data: workspaces, isLoading: workspacesIsLoading } = useGetWorkspaces();
+  const { workspace, isLoading: workspaceIsLoading } = useGetOneWorkspace(workspaceId);
+  const { workspaces, isLoading: workspacesIsLoading, error } = useGetWorkspaces();
 
   const [, setOpen] = useCreateWorkspaceModal();
 
   const router = useRouter();
-
-  const filteredWorkspaces = workspaces?.filter((ws) => ws._id !== workspace?._id);
 
   const navigateToWorkspace = (id: string) => {
     router.push(`/workspaces/${id}`);
@@ -34,6 +32,10 @@ function WorkspaceSwitcher(): JSX.Element {
 
   const openCreateWorkspaceModal = () => {
     setOpen(true);
+  };
+
+  const filteredWorkspaces = () => {
+    return workspaces?.filter((ws) => ws._id !== workspace?._id);
   };
 
   return (
@@ -52,20 +54,21 @@ function WorkspaceSwitcher(): JSX.Element {
             <p>{workspace?.name}</p>
             <p>Workspace active</p>
           </DropdownMenuItem>
-          {filteredWorkspaces?.map((ws) => (
-            <DropdownMenuItem
-              className={`${styles["ws-switcher-item"]}`}
-              key={ws._id}
-              onClick={() => navigateToWorkspace(ws!._id)}
-            >
-              <p
-                className={`${styles["ws-switcher-item__icon"]} ${styles["ws-switcher-item__icon--ws"]}`}
+          {!error &&
+            filteredWorkspaces()?.map((ws) => (
+              <DropdownMenuItem
+                className={`${styles["ws-switcher-item"]}`}
+                key={ws._id}
+                onClick={() => navigateToWorkspace(ws!._id)}
               >
-                {formatName(workspace?.name ?? "")}
-              </p>
-              <p className={styles["ws-switcher-item__name"]}>{ws.name}</p>
-            </DropdownMenuItem>
-          ))}
+                <p
+                  className={`${styles["ws-switcher-item__icon"]} ${styles["ws-switcher-item__icon--ws"]}`}
+                >
+                  {formatName(workspace?.name ?? "")}
+                </p>
+                <p className={styles["ws-switcher-item__name"]}>{ws.name}</p>
+              </DropdownMenuItem>
+            ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className={styles["ws-switcher-item"]}

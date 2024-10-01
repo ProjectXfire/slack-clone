@@ -24,7 +24,7 @@ function UserButton(): JSX.Element {
 
   const onSignOut = async () => {
     await signOut();
-    router.replace("/auth");
+    router.push("/auth");
   };
 
   if (isLoading) return <Loader />;

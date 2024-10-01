@@ -1,14 +1,17 @@
 "use client";
 
-import { Button } from "@/shared/components";
-import styles from "./Toolbar.module.css";
-import { Info, Search } from "lucide-react";
+import { redirect } from "next/navigation";
 import { useWorkspaceId } from "../../_hooks";
 import { useGetOneWorkspace } from "../../_services";
+import styles from "./Toolbar.module.css";
+import { Info, Search } from "lucide-react";
+import { Button } from "@/shared/components";
 
 function Toolbar(): JSX.Element {
   const woskspaceId = useWorkspaceId();
-  const { data } = useGetOneWorkspace(woskspaceId);
+  const { workspace, error, isLoading } = useGetOneWorkspace(woskspaceId);
+
+  if (error) redirect("/error");
 
   return (
     <header className={styles.container}>
@@ -16,7 +19,7 @@ function Toolbar(): JSX.Element {
       <div className={styles.search}>
         <Button className={styles["search__button"]} type="button" name="search-workspace">
           <Search />
-          <span>Search {data?.name}</span>
+          <span>Search {isLoading ? "" : workspace?.name}</span>
         </Button>
       </div>
       <div className={styles.info}>
