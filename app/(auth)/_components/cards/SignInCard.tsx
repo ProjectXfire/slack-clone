@@ -55,7 +55,7 @@ function SignInCard({ onClick }: Props): JSX.Element {
     const { email, password } = authValues;
     signIn("password", { email, password, flow: SignInFlow.signIn })
       .then(() => {
-        router.replace("/");
+        router.push("/");
       })
       .catch(() => {
         setError("Invalid email or password");
