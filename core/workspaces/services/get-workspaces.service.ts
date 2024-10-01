@@ -1,4 +1,4 @@
-import type { Workspace } from "../_models";
+import type { Workspace } from "../models";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 

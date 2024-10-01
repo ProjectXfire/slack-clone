@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useGetOneWorkspace, useGetWorkspaces } from "../../_services";
+import { useGetOneWorkspace, useGetWorkspaces } from "@/core/workspaces/services";
 import { useCreateWorkspaceModal } from "../../_stores";
 import { useWorkspaceId } from "../../_hooks";
 import { formatName } from "@/shared/utils";
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
   Loader,
 } from "@/shared/components";
+import DropdownItem from "../dropdown-item/DropdownItem";
 
 function WorkspaceSwitcher(): JSX.Element {
   const workspaceId = useWorkspaceId();
@@ -56,28 +57,17 @@ function WorkspaceSwitcher(): JSX.Element {
           </DropdownMenuItem>
           {!error &&
             filteredWorkspaces()?.map((ws) => (
-              <DropdownMenuItem
-                className={`${styles["ws-switcher-item"]}`}
-                key={ws._id}
-                onClick={() => navigateToWorkspace(ws!._id)}
-              >
-                <p
-                  className={`${styles["ws-switcher-item__icon"]} ${styles["ws-switcher-item__icon--ws"]}`}
-                >
-                  {formatName(workspace?.name ?? "")}
-                </p>
-                <p className={styles["ws-switcher-item__name"]}>{ws.name}</p>
+              <DropdownMenuItem key={ws._id} onClick={() => navigateToWorkspace(ws!._id)}>
+                <DropdownItem
+                  avatarString={formatName(ws.name)}
+                  title={ws.name}
+                  subtitle="El pepe pequeño"
+                />
               </DropdownMenuItem>
             ))}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className={styles["ws-switcher-item"]}
-            onClick={openCreateWorkspaceModal}
-          >
-            <Plus
-              className={`${styles["ws-switcher-item__icon"]} ${styles["ws-switcher-item__icon--create"]}`}
-            />
-            <p>Create a new workspace</p>
+          <DropdownMenuItem onClick={openCreateWorkspaceModal}>
+            <DropdownItem icon={Plus} title="Create a new workspace" />
           </DropdownMenuItem>
         </DropdownMenuContent>
       )}

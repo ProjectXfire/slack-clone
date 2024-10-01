@@ -1,6 +1,6 @@
 "use client";
 
-import type { SignInDto } from "../../_dtos";
+import type { SignInDto } from "@/core/auth/dtos";
 import { SignInFlow } from "../../_types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
