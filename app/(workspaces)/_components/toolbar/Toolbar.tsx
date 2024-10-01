@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { useWorkspaceId } from "../../_hooks";
-import { useGetOneWorkspace } from "../../_services";
+import { useGetOneWorkspace } from "@/core/workspaces/services";
 import styles from "./Toolbar.module.css";
 import { Info, Search } from "lucide-react";
 import { Button } from "@/shared/components";

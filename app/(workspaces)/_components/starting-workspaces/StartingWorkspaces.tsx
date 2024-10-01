@@ -3,7 +3,7 @@
 import StartingLoader from "../loader/StartingLoader";
 import { useEffect, useMemo } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { useGetWorkspaces } from "../../_services";
+import { useGetWorkspaces } from "@/core/workspaces/services";
 import { useCreateWorkspaceModal } from "../../_stores";
 
 function StartingWorkspaces(): JSX.Element {

@@ -1,6 +1,7 @@
 export { default as CustomAlert } from "./alerts/CustomAlert";
 export { default as ConvexProvider } from "./containers/ConvexProvider";
 export { default as ThemeProvider } from "./containers/ThemeProvider";
+export { default as Hint } from "./hint/Hint";
 export { default as Loader } from "./loaders/Loader";
 export { default as AppThemeMenu } from "./menu/AppThemeMenu";
 export * from "./ui/Alert";
@@ -12,6 +13,8 @@ export * from "./ui/DropdownMenu";
 export * from "./ui/Form";
 export * from "./ui/Input";
 export * from "./ui/Label";
+export * from "./ui/Resizable";
 export * from "./ui/Separator";
 export * from "./ui/Toast";
 export * from "./ui/Toaster";
+export * from "./ui/Tooltip";

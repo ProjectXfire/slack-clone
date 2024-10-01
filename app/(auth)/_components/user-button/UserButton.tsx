@@ -3,7 +3,7 @@
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useGetUser } from "../../_services";
+import { useGetUser } from "@/core/auth/services";
 import UserDefaultImage from "@/shared/assets/images/user-default.png";
 import styles from "./UserButton.module.css";
 import { LogOut } from "lucide-react";
@@ -29,7 +29,7 @@ function UserButton(): JSX.Element {
 
   if (isLoading) return <Loader />;
 
-  if (!data) return <></>;
+  if (!data) return <div />;
 
   return (
     <DropdownMenu>

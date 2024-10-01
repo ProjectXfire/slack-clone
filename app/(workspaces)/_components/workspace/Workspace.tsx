@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "../../_hooks";
-import { useGetOneWorkspace } from "../../_services";
+import { useGetOneWorkspace } from "@/core/workspaces/services";
 import StartingLoader from "../loader/StartingLoader";
 
 function Workspace() {

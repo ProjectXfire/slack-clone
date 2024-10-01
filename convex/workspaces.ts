@@ -19,14 +19,14 @@ export const get = query({
       }
       return memberOfWorkspaces;
     } catch {
-      return "Failed to get workspaces";
+      return "Failed to load the data";
     }
   },
 });
 
 export const getOne = query({
   args: {
-    workspaceId: v.string(),
+    workspaceId: v.id("workspaces"),
   },
   handler: async (ctx, args) => {
     try {
@@ -40,7 +40,7 @@ export const getOne = query({
         .unique();
       return workspace;
     } catch {
-      return "Failed to get workspace";
+      return "Failed to load the data";
     }
   },
 });

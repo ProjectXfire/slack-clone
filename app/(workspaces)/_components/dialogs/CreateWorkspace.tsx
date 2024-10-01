@@ -1,11 +1,11 @@
 "use client";
 
-import type { CreateWorkspaceDto } from "../../_dtos";
+import type { CreateWorkspaceDto } from "@/core/workspaces/dtos";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createWorkspaceSchema } from "../../_schemas";
-import { useCreateWorkspace } from "../../_services";
+import { useCreateWorkspace } from "@/core/workspaces/services";
 import { useToast } from "@/shared/hooks/use-toast";
 import { useCreateWorkspaceModal } from "../../_stores";
 import styles from "./Dialog.module.css";

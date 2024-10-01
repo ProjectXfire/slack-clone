@@ -9,6 +9,9 @@
   flex-shrink: 0;
   gap: 15px;
   background-color: var(--bg-color);
+  overflow-y: auto;
+  scrollbar-color: var(--bg-hover) var(--bg-color);
+  scrollbar-width: thin;
 }
 
 .sidebar-space {
@@ -22,8 +25,8 @@
 }
 
 .sidebar-button__button {
-  padding: 0;
   width: 40px;
+  padding: 0;
 }
 
 .sidebar-button__button--active {
@@ -31,7 +34,66 @@
 }
 
 .sidebar-button span {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--bg-light-color);
   cursor: default;
+}
+
+.sidebar-content-center {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-color: var(--bg-hover) var(--bg-color);
+  scrollbar-width: thin;
+  color: var(--bg-light-color);
+}
+
+.sidebar-content-header {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-content-header-trigger {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.sidebar-content-header-trigger p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-content-header-trigger svg {
+  width: 20px;
+}
+
+.sidebar-content-header-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.sidebar-content-header-actions__edit {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+}
+
+.sidebar-content-header-actions__edit svg {
+  width: 20px;
+  height: 20px;
 }
