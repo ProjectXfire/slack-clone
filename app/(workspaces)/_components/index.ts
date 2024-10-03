@@ -1,4 +1,5 @@
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
+export { default as WorkspaceSection } from "./containers/WorkspaceSection";
 export { default as CreateWorkspace } from "./dialogs/CreateWorkspace";
 export { default as DialogContainer } from "./dialogs/DialogContainer";
 export { default as DropdownItem } from "./dropdown-item/DropdownItem";
@@ -8,6 +9,8 @@ export { default as Sidebar } from "./sidebar/Sidebar";
 export { default as SidebarButton } from "./sidebar/SidebarButton";
 export { default as SidebarContent } from "./sidebar/SidebarContent";
 export { default as SidebarContentHeader } from "./sidebar/SidebarContentHeader";
+export { default as SidebarItem } from "./sidebar/SidebarItem";
+export { default as SidebarMember } from "./sidebar/SidebarMember";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
 export { default as Toolbar } from "./toolbar/Toolbar";
 export { default as WorkspacePreference } from "./workspace-preference/WorkspacePreference";
