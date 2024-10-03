@@ -1,9 +1,8 @@
 import type { Workspace } from "../models";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
 
-export function useGetOneWorkspace(workspaceId: Id<"workspaces">) {
+export function useGetOneWorkspace(workspaceId: string) {
   const data = useQuery(api.workspaces.getOne, { workspaceId });
   const isLoading = data === undefined;
 

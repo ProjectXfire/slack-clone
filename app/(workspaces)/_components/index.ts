@@ -10,5 +10,6 @@ export { default as SidebarContent } from "./sidebar/SidebarContent";
 export { default as SidebarContentHeader } from "./sidebar/SidebarContentHeader";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
 export { default as Toolbar } from "./toolbar/Toolbar";
+export { default as WorkspacePreference } from "./workspace-preference/WorkspacePreference";
 export { default as WorkspaceSwitcher } from "./workspace-switcher/WorkspaceSwitcher";
 export { default as Workspace } from "./workspace/Workspace";

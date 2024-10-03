@@ -11,7 +11,9 @@ function Toolbar(): JSX.Element {
   const woskspaceId = useWorkspaceId();
   const { workspace, error, isLoading } = useGetOneWorkspace(woskspaceId);
 
-  if (error) redirect("/error");
+  if (error) return redirect("/error");
+
+  if (workspace === null) redirect("/");
 
   return (
     <header className={styles.container}>

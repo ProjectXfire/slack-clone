@@ -26,7 +26,7 @@ export const get = query({
 
 export const getOne = query({
   args: {
-    workspaceId: v.id("workspaces"),
+    workspaceId: v.string(),
   },
   handler: async (ctx, args) => {
     try {
@@ -50,10 +50,58 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     const joinCode = generateCode();
-    if (!userId) return null;
+    if (!userId) throw new Error("User ID not found");
     const workspaceId = await ctx.db.insert("workspaces", { userId, joinCode, name: args.name });
     await ctx.db.insert("members", { userId, workspaceId, role: "admin" });
     return workspaceId;
+  },
+});
+
+export const update = mutation({
+  args: {
+    workspaceId: v.id("workspaces"),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User ID not found");
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
+      )
+      .unique();
+    if (!member || member.role !== "admin") throw new Error("Unauthorized");
+    await ctx.db.patch(args.workspaceId, { name: args.name });
+    return args.workspaceId;
+  },
+});
+
+export const remove = mutation({
+  args: {
+    workspaceId: v.id("workspaces"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User ID not found");
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
+      )
+      .unique();
+    if (!member || member.role !== "admin") throw new Error("Unauthorized");
+    const [members] = await Promise.all([
+      ctx.db
+        .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.workspaceId))
+        .collect(),
+    ]);
+    for (const member of members) {
+      await ctx.db.delete(member._id);
+    }
+    await ctx.db.delete(args.workspaceId);
+    return args.workspaceId;
   },
 });
 

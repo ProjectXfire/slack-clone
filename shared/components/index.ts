@@ -1,6 +1,9 @@
 export { default as CustomAlert } from "./alerts/CustomAlert";
 export { default as ConvexProvider } from "./containers/ConvexProvider";
 export { default as ThemeProvider } from "./containers/ThemeProvider";
+export * from "./dialogs/Confirm";
+export { default as ConfirmAction } from "./dialogs/ConfirmAction";
+export { default as ErrorMessage } from "./dialogs/ErrorMessage";
 export { default as Hint } from "./hint/Hint";
 export { default as Loader } from "./loaders/Loader";
 export { default as AppThemeMenu } from "./menu/AppThemeMenu";

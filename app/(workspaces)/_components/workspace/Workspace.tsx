@@ -7,19 +7,20 @@ import { useGetOneWorkspace } from "@/core/workspaces/services";
 import StartingLoader from "../loader/StartingLoader";
 
 function Workspace() {
+  return <div>Workspace</div>;
+}
+export default Workspace;
+
+/* 
   const workspaceId = useWorkspaceId();
-  const { workspace, isLoading, error } = useGetOneWorkspace(workspaceId);
+  const { workspace, isLoading } = useGetOneWorkspace(workspaceId);
 
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
-    if (error) router.push("/error");
-    if (!workspace) router.replace("/");
-  }, [workspace, isLoading, router, error]);
+    if (workspace === null) router.replace("/");
+  }, [workspace, isLoading, router]);
 
   if (isLoading || !workspace) return <StartingLoader reduceHeightIn={50} />;
-
-  return <div>Workspace {workspace.name}</div>;
-}
-export default Workspace;
+*/

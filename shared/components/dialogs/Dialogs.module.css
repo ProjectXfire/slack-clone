@@ -1,0 +1,9 @@
+.confirm-action-button {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-action-button svg {
+  height: 20px;
+  width: 20px;
+}

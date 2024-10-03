@@ -1,6 +1,7 @@
 import type { Workspace } from "@/core/workspaces/models";
 import React from "react";
 import { formatName } from "@/shared/utils";
+import { usePreferenceWorkspaceModal } from "../../_stores";
 import styles from "./Sidebar.module.css";
 import { ChevronDown, Users, Settings, SquarePen, ListFilter } from "lucide-react";
 import {
@@ -20,6 +21,12 @@ interface Props {
 }
 
 function SidebarContentHeader({ workspace, isAdmin }: Props): JSX.Element {
+  const [, setState] = usePreferenceWorkspaceModal();
+
+  const onOpenPreferenceModal = (): void => {
+    setState({ initValue: workspace.name, isOpen: true, workspaceId: workspace._id });
+  };
+
   return (
     <div className={styles["sidebar-content-header"]}>
       <DropdownMenu>
@@ -52,7 +59,7 @@ function SidebarContentHeader({ workspace, isAdmin }: Props): JSX.Element {
                 />
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onOpenPreferenceModal}>
                 <DropdownItem titleBold={false} icon={Settings} title="Preferences" />
               </DropdownMenuItem>
             </>
