@@ -1,1 +1,1 @@
-export * from "./channel.mode";
+export * from "./channel.model";

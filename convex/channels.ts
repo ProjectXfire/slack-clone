@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const get = query({
@@ -25,5 +25,18 @@ export const get = query({
     } catch {
       return "Failed to load the data";
     }
+  },
+});
+
+export const create = mutation({
+  args: { workspaceId: v.string(), name: v.string() },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User ID not found");
+    const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
+    if (!workspaceId) throw new Error("Invalid workspace ID");
+    const parsedName = args.name.replace(/\s+/g, "-").toLowerCase();
+    const channel = await ctx.db.insert("channels", { name: parsedName, workspaceId });
+    return channel;
   },
 });

@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateWorkspace from "./CreateWorkspace";
 import WorkspacePreference from "../workspace-preference/WorkspacePreference";
+import CreateChannel from "./CreateChannel";
 
 function DialogContainer(): JSX.Element {
   const [mounted, setMounted] = useState(false);
@@ -17,6 +17,7 @@ function DialogContainer(): JSX.Element {
   return (
     <>
       <CreateWorkspace />
+      <CreateChannel />
       <WorkspacePreference />
     </>
   );

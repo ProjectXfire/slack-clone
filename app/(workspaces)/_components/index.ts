@@ -1,5 +1,6 @@
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as WorkspaceSection } from "./containers/WorkspaceSection";
+export { default as CreateChannel } from "./dialogs/CreateChannel";
 export { default as CreateWorkspace } from "./dialogs/CreateWorkspace";
 export { default as DialogContainer } from "./dialogs/DialogContainer";
 export { default as DropdownItem } from "./dropdown-item/DropdownItem";
