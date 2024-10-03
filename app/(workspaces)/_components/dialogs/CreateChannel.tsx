@@ -1,13 +1,13 @@
 "use client";
 
-import type { CreateWorkspaceDto } from "@/core/workspaces/dtos";
+import type { CreateChannelDto } from "@/core/channels/dtos";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWorkspaceSchema } from "../../_schemas";
-import { useCreateWorkspace } from "@/core/workspaces/services";
+import { createChannelSchema } from "../../_schemas";
+import { useCreateChannel } from "@/core/channels/services";
 import { useToast } from "@/shared/hooks/use-toast";
-import { useCreateWorkspaceModal } from "../../_stores";
+import { useCreateChannelModal } from "../../_stores";
 import styles from "./Dialog.module.css";
 import {
   Button,
@@ -24,23 +24,24 @@ import {
   Input,
 } from "@/shared/components";
 
-function CreateWorkspace(): JSX.Element {
-  const [openModal, setOpenModal] = useCreateWorkspaceModal();
-  const { mutate, isPending } = useCreateWorkspace();
+function CreateChannel(): JSX.Element {
+  const [state, setState] = useCreateChannelModal();
+  const { mutate, isPending } = useCreateChannel();
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<CreateWorkspaceDto>({
-    resolver: zodResolver(createWorkspaceSchema),
+  const form = useForm<CreateChannelDto>({
+    resolver: zodResolver(createChannelSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  const onSubmit = (createWorkspaceDto: CreateWorkspaceDto): void => {
+  const onSubmit = (createWorkspaceDto: CreateChannelDto): void => {
     const { name } = createWorkspaceDto;
+    if (!state.workspaceId) return;
     mutate(
-      { name },
+      { name, workspaceId: state.workspaceId },
       {
         onError: (error) => {
           toast({
@@ -51,33 +52,31 @@ function CreateWorkspace(): JSX.Element {
           });
         },
         onSuccess: (data) => {
-          router.push(`/workspaces/${data}`);
+          router.push(`/workspaces/${state.workspaceId}/channels/${data}`);
           handleClose();
           toast({
             variant: "default",
             title: "Workspace",
-            description: "Successful workspace created",
+            description: "Successful channel created",
             duration: 2000,
           });
-          setOpenModal(false);
+          setState({ isOpen: false, workspaceId: "" });
         },
       }
     );
   };
 
   const handleClose = (): void => {
-    setOpenModal(false);
+    setState({ isOpen: false, workspaceId: "" });
     form.reset();
   };
 
   return (
-    <Dialog open={openModal} onOpenChange={handleClose}>
+    <Dialog open={state.isOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add a Workspace</DialogTitle>
-          <DialogDescription>
-            Create a new workspace to start a simpler way to chat and collaborate.
-          </DialogDescription>
+          <DialogTitle>Add a Channel</DialogTitle>
+          <DialogDescription>Create a new channel to start new conversations.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className={styles["dialog-form"]} onSubmit={form.handleSubmit(onSubmit)}>
@@ -91,7 +90,7 @@ function CreateWorkspace(): JSX.Element {
                       disabled={isPending}
                       autoFocus
                       minLength={3}
-                      placeholder="Workspace name e.g. 'Work', 'Personal', 'Home'"
+                      placeholder="Channel name e.g. 'Work', 'Personal', 'Home'"
                       {...field}
                     />
                   </FormControl>
@@ -100,7 +99,7 @@ function CreateWorkspace(): JSX.Element {
               )}
             />
             <div className={styles["dialog-form__action"]}>
-              <Button type="submit" name="create-workspace" disabled={isPending}>
+              <Button type="submit" name="create-channel" disabled={isPending}>
                 Create
               </Button>
             </div>
@@ -110,4 +109,4 @@ function CreateWorkspace(): JSX.Element {
     </Dialog>
   );
 }
-export default CreateWorkspace;
+export default CreateChannel;

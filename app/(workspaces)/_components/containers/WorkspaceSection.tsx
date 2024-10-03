@@ -48,6 +48,7 @@ function WorkspaceSection({ children, hint, label, onNew }: Props): JSX.Element 
               variant="transparent"
               type="button"
               name="new channel"
+              onClick={onNew}
             >
               <Plus />
             </Button>
