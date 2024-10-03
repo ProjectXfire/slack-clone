@@ -7,23 +7,26 @@ import styles from "./Sidebar.module.css";
 import { AlertTriangle } from "lucide-react";
 import { CustomAlert, Loader } from "@/shared/components";
 import SidebarContentHeader from "./SidebarContentHeader";
+import { redirect } from "next/navigation";
 
 function SidebarContent(): JSX.Element {
   const workspaceId = useWorkspaceId();
 
-  const { member, isLoading: isLoadingMember, error: errorMember } = useCurrentMember(workspaceId);
+  const { member, isLoading: isLoadingMember, error: memberError } = useCurrentMember(workspaceId);
   const {
     workspace,
     isLoading: isLoadingWorkspace,
-    error: errorWorkspace,
+    error: workspaceError,
   } = useGetOneWorkspace(workspaceId);
 
-  if (errorMember || errorWorkspace)
+  if (memberError || workspaceError) redirect("/error");
+
+  if (member === null || workspace === null)
     return (
       <div className={styles["sidebar-content"]}>
         <div className={`${styles["sidebar-content-center"]}`}>
           <CustomAlert
-            description={errorMember}
+            description="Workspace not found"
             title={"Error"}
             variant="destructive"
             icon={<AlertTriangle />}

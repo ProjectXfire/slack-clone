@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useGetOneWorkspace, useGetWorkspaces } from "@/core/workspaces/services";
 import { useCreateWorkspaceModal } from "../../_stores";
 import { useWorkspaceId } from "../../_hooks";
@@ -20,8 +20,12 @@ import DropdownItem from "../dropdown-item/DropdownItem";
 
 function WorkspaceSwitcher(): JSX.Element {
   const workspaceId = useWorkspaceId();
-  const { workspace, isLoading: workspaceIsLoading } = useGetOneWorkspace(workspaceId);
-  const { workspaces, isLoading: workspacesIsLoading, error } = useGetWorkspaces();
+  const {
+    workspace,
+    isLoading: workspaceIsLoading,
+    error: workspaceError,
+  } = useGetOneWorkspace(workspaceId);
+  const { workspaces, isLoading: workspacesIsLoading, error: workspacesError } = useGetWorkspaces();
 
   const [, setOpen] = useCreateWorkspaceModal();
 
@@ -39,6 +43,8 @@ function WorkspaceSwitcher(): JSX.Element {
     return workspaces?.filter((ws) => ws._id !== workspace?._id);
   };
 
+  if (workspaceError || workspacesError) redirect("/error");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,16 +61,15 @@ function WorkspaceSwitcher(): JSX.Element {
             <p>{workspace?.name}</p>
             <p>Workspace active</p>
           </DropdownMenuItem>
-          {!error &&
-            filteredWorkspaces()?.map((ws) => (
-              <DropdownMenuItem key={ws._id} onClick={() => navigateToWorkspace(ws!._id)}>
-                <DropdownItem
-                  avatarString={formatName(ws.name)}
-                  title={ws.name}
-                  subtitle="El pepe pequeño"
-                />
-              </DropdownMenuItem>
-            ))}
+          {filteredWorkspaces()?.map((ws) => (
+            <DropdownMenuItem key={ws._id} onClick={() => navigateToWorkspace(ws!._id)}>
+              <DropdownItem
+                avatarString={formatName(ws.name)}
+                title={ws.name}
+                subtitle="El pepe pequeño"
+              />
+            </DropdownMenuItem>
+          ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={openCreateWorkspaceModal}>
             <DropdownItem icon={Plus} title="Create a new workspace" />
