@@ -53,6 +53,7 @@ export const create = mutation({
     if (!userId) throw new Error("User ID not found");
     const workspaceId = await ctx.db.insert("workspaces", { userId, joinCode, name: args.name });
     await ctx.db.insert("members", { userId, workspaceId, role: "admin" });
+    await ctx.db.insert("channels", { name: "general", workspaceId });
     return workspaceId;
   },
 });
