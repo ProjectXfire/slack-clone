@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
-import { Id } from "@/convex/_generated/dataModel";
 
-type RequestType = { workspaceId: Id<"workspaces">; name: string };
-type ResponseType = Id<"workspaces">;
+type RequestType = { workspaceId: string };
+type ResponseType = string;
 
 type Options = {
   onSuccess?: (data: ResponseType) => void;
@@ -13,11 +12,11 @@ type Options = {
   throwError?: boolean;
 };
 
-export function useUpdateWorkspace() {
+export function useUpdateWorkspaceCode() {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [data, setData] = useState<ResponseType | null>(null);
-  const mutation = useMutation(api.workspaces.update);
+  const mutation = useMutation(api.workspaces.newJoinCode);
 
   const mutate = useCallback(
     async (values: RequestType, options: Options) => {
@@ -30,7 +29,6 @@ export function useUpdateWorkspace() {
         if (response === null) throw new Error("Failed to update workspace");
         setData(response);
         onSuccess?.(response);
-        throw new Error("Missing arguments");
       } catch (error) {
         if (throwError) throw error;
         const err = error as Error;

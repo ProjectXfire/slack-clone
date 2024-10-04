@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/Dialog";
-import { Separator } from "../ui/Separator";
 import { Button } from "../ui/Button";
 
 type Options = {
@@ -50,11 +49,10 @@ export function useConfirm({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
-        <Separator />
         <DialogFooter>
           <Button
             className={styles["confirm-action-button"]}
-            variant="destructive"
+            variant="outline"
             type="button"
             name="cancel"
             onClick={handleCancel}
@@ -63,7 +61,7 @@ export function useConfirm({
           </Button>
           <Button
             className={styles["confirm-action-button"]}
-            variant="default"
+            variant="destructive"
             type="button"
             name="confirm"
             onClick={handleConfirm}

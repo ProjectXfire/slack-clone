@@ -35,6 +35,13 @@ export const create = mutation({
     if (!userId) throw new Error("User ID not found");
     const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
     if (!workspaceId) throw new Error("Invalid workspace ID");
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", workspaceId).eq("userId", userId)
+      )
+      .unique();
+    if (!member || member.role !== "admin") throw new Error("Unauthorized");
     const parsedName = args.name.replace(/\s+/g, "-").toLowerCase();
     const channel = await ctx.db.insert("channels", { name: parsedName, workspaceId });
     return channel;
