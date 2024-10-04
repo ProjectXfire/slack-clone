@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import CreateWorkspace from "./CreateWorkspace";
 import WorkspacePreference from "../workspace-preference/WorkspacePreference";
 import CreateChannel from "./CreateChannel";
+import InvitePeople from "./InvitePeople";
 
 function DialogContainer(): JSX.Element {
   const [mounted, setMounted] = useState(false);
@@ -19,6 +20,7 @@ function DialogContainer(): JSX.Element {
       <CreateWorkspace />
       <CreateChannel />
       <WorkspacePreference />
+      <InvitePeople />
     </>
   );
 }

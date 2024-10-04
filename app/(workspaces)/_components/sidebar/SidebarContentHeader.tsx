@@ -1,7 +1,7 @@
 import type { Workspace } from "@/core/workspaces/models";
 import React from "react";
 import { formatName } from "@/shared/utils";
-import { usePreferenceWorkspaceModal } from "../../_stores";
+import { useInvitePeopleWorkspaceModal, usePreferenceWorkspaceModal } from "../../_stores";
 import styles from "./Sidebar.module.css";
 import { ChevronDown, Users, Settings, SquarePen, ListFilter } from "lucide-react";
 import {
@@ -21,10 +21,16 @@ interface Props {
 }
 
 function SidebarContentHeader({ workspace, isAdmin }: Props): JSX.Element {
-  const [, setState] = usePreferenceWorkspaceModal();
+  const [, setPWState] = usePreferenceWorkspaceModal();
+  const [, setIPWState] = useInvitePeopleWorkspaceModal();
 
   const onOpenPreferenceModal = (): void => {
-    setState({ initValue: workspace.name, isOpen: true, workspaceId: workspace._id });
+    setPWState({ initValue: workspace.name, isOpen: true, workspaceId: workspace._id });
+  };
+
+  const onOpenInvitePeopleModal = (): void => {
+    const { name, joinCode, _id } = workspace;
+    setIPWState({ isOpen: true, workspaceName: name, joinCode, workspaceId: _id });
   };
 
   return (
@@ -51,7 +57,7 @@ function SidebarContentHeader({ workspace, isAdmin }: Props): JSX.Element {
           {isAdmin && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onOpenInvitePeopleModal}>
                 <DropdownItem
                   icon={Users}
                   titleBold={false}

@@ -106,6 +106,31 @@ export const remove = mutation({
   },
 });
 
+export const newJoinCode = mutation({
+  args: { workspaceId: v.string() },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User ID not found");
+    const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
+    if (!workspaceId) throw new Error("Invalid workspace ID");
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", workspaceId).eq("userId", userId)
+      )
+      .unique();
+    if (!member || member.role !== "admin") throw new Error("Unauthorized");
+    const joinCode = generateCode();
+    await ctx.db.patch(workspaceId, { joinCode });
+    const workspace = await ctx.db
+      .query("workspaces")
+      .filter((q) => q.and(q.eq(q.field("userId"), userId), q.eq(q.field("_id"), workspaceId)))
+      .unique();
+    if (!workspace) throw new Error("Workspace not found");
+    return workspace.joinCode;
+  },
+});
+
 function generateCode() {
   const code = Array.from({ length: 6 }, () => {
     return "012345689abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 36)];

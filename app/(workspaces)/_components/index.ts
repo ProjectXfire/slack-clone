@@ -3,6 +3,7 @@ export { default as WorkspaceSection } from "./containers/WorkspaceSection";
 export { default as CreateChannel } from "./dialogs/CreateChannel";
 export { default as CreateWorkspace } from "./dialogs/CreateWorkspace";
 export { default as DialogContainer } from "./dialogs/DialogContainer";
+export { default as InvitePeople } from "./dialogs/InvitePeople";
 export { default as DropdownItem } from "./dropdown-item/DropdownItem";
 export { default as StartingLoader } from "./loader/StartingLoader";
 export { default as ResizableContent } from "./resizable-content/ResizableContent";
