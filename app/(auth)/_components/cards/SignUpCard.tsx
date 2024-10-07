@@ -3,7 +3,6 @@
 import type { SignUpDto } from "@/core/auth/dtos";
 import { SignInFlow } from "../../_types";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +39,6 @@ function SignUpCard({ onClick }: Props): JSX.Element {
   const [error, setError] = useState("");
 
   const { signIn } = useAuthActions();
-  const router = useRouter();
 
   const form = useForm<SignUpDto>({
     resolver: zodResolver(signUpSchema),
@@ -57,7 +55,7 @@ function SignUpCard({ onClick }: Props): JSX.Element {
     const { name, email, password } = authValues;
     signIn("password", { name, email, password, flow: SignInFlow.signUp })
       .then(() => {
-        router.replace("/");
+        window.location.reload();
       })
       .catch(() => {
         setError("Something went wrong!");

@@ -12,3 +12,14 @@ export function useGetOneWorkspace(workspaceId: string) {
 
   return { workspace, isLoading, error };
 }
+
+export function useGetWorkspaceInfo(workspaceId: string) {
+  const data = useQuery(api.workspaces.getInfo, { workspaceId });
+  const isLoading = data === undefined;
+
+  const workspaceInfo = data as { name: string; isMember: boolean } | null;
+
+  const error = typeof data === "string" ? data : "";
+
+  return { workspaceInfo, isLoading, error };
+}

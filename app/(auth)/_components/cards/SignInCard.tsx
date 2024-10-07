@@ -3,7 +3,6 @@
 import type { SignInDto } from "@/core/auth/dtos";
 import { SignInFlow } from "../../_types";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +39,6 @@ function SignInCard({ onClick }: Props): JSX.Element {
   const [error, setError] = useState("");
 
   const { signIn } = useAuthActions();
-  const router = useRouter();
 
   const form = useForm<SignInDto>({
     resolver: zodResolver(signInSchema),
@@ -55,7 +53,7 @@ function SignInCard({ onClick }: Props): JSX.Element {
     const { email, password } = authValues;
     signIn("password", { email, password, flow: SignInFlow.signIn })
       .then(() => {
-        router.push("/");
+        window.location.reload();
       })
       .catch(() => {
         setError("Invalid email or password");

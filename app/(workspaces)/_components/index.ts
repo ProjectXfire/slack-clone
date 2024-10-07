@@ -1,3 +1,4 @@
+export { default as JoinContainer } from "./containers/JoinContainer";
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as WorkspaceSection } from "./containers/WorkspaceSection";
 export { default as CreateChannel } from "./dialogs/CreateChannel";
@@ -15,6 +16,7 @@ export { default as SidebarItem } from "./sidebar/SidebarItem";
 export { default as SidebarMember } from "./sidebar/SidebarMember";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
 export { default as Toolbar } from "./toolbar/Toolbar";
+export { default as WorkspaceJoin } from "./workspace-join/WorkspaceJoin";
 export { default as WorkspacePreference } from "./workspace-preference/WorkspacePreference";
 export { default as WorkspaceSwitcher } from "./workspace-switcher/WorkspaceSwitcher";
 export { default as Workspace } from "./workspace/Workspace";

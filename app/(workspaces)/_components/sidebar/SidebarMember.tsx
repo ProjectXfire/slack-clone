@@ -28,7 +28,7 @@ function SidebarMember({ image, userId, isActive, label }: Props): JSX.Element {
             {formatName(label ?? "MB")}
           </AvatarFallback>
         </Avatar>
-        <span>{label}</span>
+        <span className={styles["sidebar-member__name"]}>{label}</span>
       </NextLink>
     </Button>
   );

@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--bg-color);
-  color: var(--bg-light-color);
+  color: var(--bg-color-light-2);
 }
 
 .space {

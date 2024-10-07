@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, QueryCtx } from "./_generated/server";
+import { mutation, query, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "./_generated/dataModel";
 
@@ -52,6 +52,31 @@ export const current = query({
     } catch {
       return "Failed to load the data";
     }
+  },
+});
+
+export const create = mutation({
+  args: {
+    joinCode: v.string(),
+    workspaceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User ID not found");
+    const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
+    if (!workspaceId) throw new Error("Invalid workspace ID");
+    const workspace = await ctx.db.get(workspaceId);
+    if (!workspace) throw new Error("Workspace not found");
+    if (args.joinCode !== workspace.joinCode.toLowerCase()) throw new Error("Invalid join code");
+    const existingMember = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", workspaceId).eq("userId", userId)
+      )
+      .unique();
+    if (existingMember) return { workspaceId, isMember: true };
+    await ctx.db.insert("members", { role: "member", userId, workspaceId });
+    return { workspaceId, isMember: false };
   },
 });
 
