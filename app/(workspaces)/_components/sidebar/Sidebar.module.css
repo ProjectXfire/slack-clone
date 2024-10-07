@@ -39,7 +39,7 @@
 
 .sidebar-button span {
   font-size: 0.7rem;
-  color: var(--bg-light-color);
+  color: var(--bg-color-light-2);
   cursor: default;
 }
 
@@ -55,7 +55,7 @@
   overflow-y: auto;
   scrollbar-color: var(--bg-hover) var(--bg-color);
   scrollbar-width: thin;
-  color: var(--bg-light-color);
+  color: var(--bg-color-light-2);
 }
 
 .sidebar-content-center {
@@ -141,6 +141,7 @@
 
 .sidebar-member-container {
   height: 35px;
+  overflow: hidden;
 }
 
 .sidebar-member {
@@ -153,6 +154,11 @@
 .sidebar-member__avatar {
   width: 25px;
   height: 25px;
+}
+
+.sidebar-member__name {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .sidebar-member__avatar-fallback {

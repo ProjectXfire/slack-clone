@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.container p {
+  text-align: center;
+}
+
+.container p:nth-child(1) {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.container p:nth-child(2) {
+  color: var(--bg-color-light);
+}
+
+.code-block-container {
+  opacity: 0.5;
+}
+
+.code-block {
+  border: 1px solid var(--bg-color-light);
+  border-radius: 10px;
+  text-transform: capitalize;
+  color: var(--bg-color-light);
+}
+
+.code-block--active {
+  background-color: var(--bg-color-light-2);
+}
+
+.code-block--inactive {
+  background-color: var(--bg-avatar);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}

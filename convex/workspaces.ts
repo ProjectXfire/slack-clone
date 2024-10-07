@@ -32,13 +32,51 @@ export const getOne = query({
     try {
       const userId = await getAuthUserId(ctx);
       if (!userId) return "User ID not found";
+      const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
+      if (!workspaceId) return "Invalid workspace ID";
       const workspace = await ctx.db
         .query("workspaces")
-        .filter((q) =>
-          q.and(q.eq(q.field("userId"), userId), q.eq(q.field("_id"), args.workspaceId))
+        .filter((q) => q.eq(q.field("_id"), args.workspaceId))
+        .unique();
+      const member = await ctx.db
+        .query("members")
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", workspaceId).eq("userId", userId)
         )
         .unique();
+      if (!member) return "Unauthorized";
       return workspace;
+    } catch {
+      return "Failed to load the data";
+    }
+  },
+});
+
+export const getInfo = query({
+  args: {
+    workspaceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) return "User ID not found";
+      const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
+      if (!workspaceId) return "Invalid workspace ID";
+      const workspace = await ctx.db
+        .query("workspaces")
+        .filter((q) => q.eq(q.field("_id"), args.workspaceId))
+        .unique();
+      if (!workspace) return "Workspace not found";
+      const member = await ctx.db
+        .query("members")
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", workspaceId).eq("userId", userId)
+        )
+        .unique();
+      return {
+        name: workspace.name,
+        isMember: !!member,
+      };
     } catch {
       return "Failed to load the data";
     }
