@@ -8,7 +8,7 @@ export function useGetOneWorkspace(workspaceId: string) {
 
   const workspace = data as Workspace | null;
 
-  const error = typeof data === "string" ? data : "";
+  const error = typeof data === "string" ? data : null;
 
   return { workspace, isLoading, error };
 }
@@ -19,7 +19,7 @@ export function useGetWorkspaceInfo(workspaceId: string) {
 
   const workspaceInfo = data as { name: string; isMember: boolean } | null;
 
-  const error = typeof data === "string" ? data : "";
+  const error = typeof data === "string" ? data : null;
 
   return { workspaceInfo, isLoading, error };
 }

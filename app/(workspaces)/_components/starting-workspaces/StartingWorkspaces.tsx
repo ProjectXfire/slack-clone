@@ -1,31 +1,35 @@
 "use client";
 
-import StartingLoader from "../loader/StartingLoader";
-import { useEffect, useMemo } from "react";
+import React from "react";
+import { useEffect } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { useGetWorkspaces } from "@/core/workspaces/services";
 import { useCreateWorkspaceModal } from "../../_stores";
+import { useGetWorkspaces } from "@/core/workspaces/services";
+import StartingLoader from "../loader/StartingLoader";
 
 function StartingWorkspaces(): JSX.Element {
-  const { workspaces, isLoading, error } = useGetWorkspaces();
   const [openModal, setOpenModal] = useCreateWorkspaceModal();
   const router = useRouter();
 
-  const workspaceId = useMemo(() => workspaces?.[0]?._id, [workspaces]);
+  const { isLoading, error, workspaces } = useGetWorkspaces();
+
+  const redirectToWorkspace = (workspaceId: string): void => {
+    router.replace(`/workspaces/${workspaceId}`);
+  };
 
   useEffect(() => {
     if (isLoading) return;
-    if (error) redirect("/error");
-    if (workspaceId) {
-      router.replace(`/workspaces/${workspaceId}`);
-    } else {
-      if (!openModal) {
-        setOpenModal(true);
-      }
+    if (workspaces && workspaces.length > 0) {
+      redirectToWorkspace(workspaces[0]._id);
+      return;
     }
-  }, [setOpenModal, workspaceId, isLoading, openModal, router, error]);
-
-  if (isLoading) return <StartingLoader />;
+    if (!openModal) {
+      setOpenModal(true);
+      return;
+    }
+    if (error) redirect("/error");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openModal, isLoading, error]);
 
   return <StartingLoader />;
 }

@@ -55,7 +55,7 @@ function WorkspaceJoin(): JSX.Element {
 
   if (isLoading) return <Loader size={50} />;
 
-  if (error) redirect("/error");
+  if (error) redirect("/");
 
   return (
     <div className={styles.container}>

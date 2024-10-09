@@ -6,9 +6,9 @@ export function useGetWorkspaces() {
   const data = useQuery(api.workspaces.get);
   const isLoading = data === undefined;
 
-  const workspaces = data as Workspace[] | null;
+  const workspaces = data as Workspace[];
 
-  const error = typeof data === "string" ? data : "";
+  const error = typeof data === "string" ? data : null;
 
   return { workspaces, isLoading, error };
 }

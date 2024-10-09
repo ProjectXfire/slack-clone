@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./Loader.module.css";
 import { Loader } from "@/shared/components";
 
