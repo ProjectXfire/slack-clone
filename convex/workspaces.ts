@@ -32,6 +32,7 @@ export const getOne = query({
     try {
       const userId = await getAuthUserId(ctx);
       if (!userId) return "User ID not found";
+      if (args.workspaceId.length === 0) return "Missing workspace ID";
       const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
       if (!workspaceId) return "Invalid workspace ID";
       const workspace = await ctx.db
@@ -45,6 +46,7 @@ export const getOne = query({
         )
         .unique();
       if (!member) return "Unauthorized";
+      if (!workspace) return "Workspace not found";
       return workspace;
     } catch {
       return "Failed to load the data";

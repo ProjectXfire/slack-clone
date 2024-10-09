@@ -6,9 +6,9 @@ export function useGetMembers(workspaceId: string) {
   const data = useQuery(api.members.get, { workspaceId });
   const isLoading = data === undefined;
 
-  const members = data as Member[] | null;
+  const members = data as Member[];
 
-  const error = typeof data === "string" ? data : "";
+  const error = typeof data === "string" ? data : null;
 
   return { members, isLoading, error };
 }

@@ -8,7 +8,7 @@ export function useCurrentMember(workspaceId: string) {
 
   const member = data as Member | null;
 
-  const error = typeof data === "string" ? data : "";
+  const error = typeof data === "string" ? data : null;
 
   return { member, isLoading, error };
 }

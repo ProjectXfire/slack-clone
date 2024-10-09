@@ -1,6 +1,5 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { useWorkspaceId } from "../../_hooks";
 import { useGetOneWorkspace } from "@/core/workspaces/services";
 import styles from "./Toolbar.module.css";
@@ -9,11 +8,7 @@ import { Button } from "@/shared/components";
 
 function Toolbar(): JSX.Element {
   const woskspaceId = useWorkspaceId();
-  const { workspace, error, isLoading } = useGetOneWorkspace(woskspaceId);
-
-  if (error) return redirect("/error");
-
-  if (workspace === null) redirect("/");
+  const { workspace, isLoading } = useGetOneWorkspace(woskspaceId);
 
   return (
     <header className={styles.container}>

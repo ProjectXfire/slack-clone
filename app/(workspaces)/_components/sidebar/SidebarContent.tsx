@@ -6,7 +6,7 @@ import { useCurrentMember, useGetMembers } from "@/core/members/services";
 import { useGetOneWorkspace } from "@/core/workspaces/services";
 import { useGetChannels } from "@/core/channels/services";
 import { useCreateChannelModal } from "../../_stores";
-import { useWorkspaceId } from "../../_hooks";
+import { useChannelId, useWorkspaceId } from "../../_hooks";
 import styles from "./Sidebar.module.css";
 import { AlertTriangle, HashIcon, MessageSquareText, SendHorizonal } from "lucide-react";
 import { CustomAlert, Loader } from "@/shared/components";
@@ -17,6 +17,7 @@ import SidebarMember from "./SidebarMember";
 
 function SidebarContent(): JSX.Element {
   const workspaceId = useWorkspaceId();
+  const channelId = useChannelId();
   const [, setState] = useCreateChannelModal();
 
   const { member, isLoading: isLoadingMember, error: memberError } = useCurrentMember(workspaceId);
@@ -36,7 +37,7 @@ function SidebarContent(): JSX.Element {
     setState({ workspaceId, isOpen: true });
   };
 
-  if (memberError || workspaceError || channelsError || membersError) redirect("/error");
+  if (memberError || workspaceError || channelsError || membersError) redirect("/");
 
   if (member === null || workspace === null || members === null)
     return (
@@ -65,7 +66,13 @@ function SidebarContent(): JSX.Element {
           <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts-sent" />
           <WorkspaceSection label="Channels" hint="New channel" onNew={onOpenCreateChannelModal}>
             {channels?.map((item) => (
-              <SidebarItem key={item._id} icon={HashIcon} label={item.name} id={item._id} />
+              <SidebarItem
+                key={item._id}
+                icon={HashIcon}
+                label={item.name}
+                id={item._id}
+                isActive={channelId === item._id}
+              />
             ))}
           </WorkspaceSection>
           <WorkspaceSection label="Direct Messages" hint="New direct message" onNew={() => {}}>

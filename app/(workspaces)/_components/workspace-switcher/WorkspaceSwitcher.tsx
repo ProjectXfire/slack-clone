@@ -43,7 +43,7 @@ function WorkspaceSwitcher(): JSX.Element {
     return workspaces?.filter((ws) => ws._id !== workspace?._id);
   };
 
-  if (workspaceError || workspacesError) redirect("/error");
+  if (workspaceError || workspacesError) redirect("/");
 
   return (
     <DropdownMenu>
