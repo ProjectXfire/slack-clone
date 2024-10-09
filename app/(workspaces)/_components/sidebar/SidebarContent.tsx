@@ -34,7 +34,7 @@ function SidebarContent(): JSX.Element {
   const { members, isLoading: isLoadingMembers, error: membersError } = useGetMembers(workspaceId);
 
   const onOpenCreateChannelModal = (): void => {
-    setState({ workspaceId, isOpen: true });
+    if (member?.role === "admin") setState({ workspaceId, isOpen: true });
   };
 
   if (memberError || workspaceError || channelsError || membersError) redirect("/");
@@ -64,7 +64,12 @@ function SidebarContent(): JSX.Element {
           <SidebarContentHeader workspace={workspace!} isAdmin={member!.role === "admin"} />
           <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
           <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts-sent" />
-          <WorkspaceSection label="Channels" hint="New channel" onNew={onOpenCreateChannelModal}>
+          <WorkspaceSection
+            label="Channels"
+            hint="New channel"
+            hideOnNew={member?.role === "member"}
+            onNew={onOpenCreateChannelModal}
+          >
             {channels?.map((item) => (
               <SidebarItem
                 key={item._id}

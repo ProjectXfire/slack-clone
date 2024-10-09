@@ -11,9 +11,10 @@ interface Props {
   label: string;
   hint: string;
   onNew?: () => void;
+  hideOnNew?: boolean;
 }
 
-function WorkspaceSection({ children, hint, label, onNew }: Props): JSX.Element {
+function WorkspaceSection({ children, hint, label, onNew, hideOnNew = false }: Props): JSX.Element {
   const [on, toggle] = useToggle(true);
 
   return (
@@ -41,7 +42,7 @@ function WorkspaceSection({ children, hint, label, onNew }: Props): JSX.Element 
           <span>{label}</span>
         </Button>
         <div className={styles["workspace-section-space"]} />
-        {onNew && (
+        {onNew && !hideOnNew && (
           <Hint label={hint} side="top" align="center">
             <Button
               className={`${styles["workspace-section-button"]} ${styles["workspace-section-button--hide"]}`}
