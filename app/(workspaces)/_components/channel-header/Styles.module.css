@@ -1,0 +1,97 @@
+.container {
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.channel-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.channel-button svg {
+  width: 10px;
+  height: 10px;
+}
+
+.channel-title {
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: default;
+  font-size: 0.9rem;
+}
+
+.dialog-channel-item {
+  padding: 15px 15px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bg-avatar);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: default;
+  gap: 3px;
+}
+
+.dialog-channel-item__block {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  gap: 2px;
+}
+
+.dialog-channel-item__block--name {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.dialog-channel-item__block-edit {
+  color: var(--bg-color);
+  cursor: pointer;
+}
+
+.dialog-channel-item__block-edit:hover {
+  text-decoration: underline;
+}
+
+.dialog-channel-item__block-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dialog-channel-item__block-form input {
+  width: 100%;
+  height: 30px;
+}
+
+.dialog-channel-item__block-form button {
+  height: 30px;
+}
+
+.dialog-channel-remove {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.dialog-channel-remove svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dialog-channel-remove {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.dialog-channel-remove svg {
+  width: 20px;
+  height: 20px;
+}

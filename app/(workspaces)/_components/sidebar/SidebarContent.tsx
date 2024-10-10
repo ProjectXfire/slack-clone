@@ -20,26 +20,36 @@ function SidebarContent(): JSX.Element {
   const channelId = useChannelId();
   const [, setState] = useCreateChannelModal();
 
-  const { member, isLoading: isLoadingMember, error: memberError } = useCurrentMember(workspaceId);
-  const {
-    workspace,
-    isLoading: isLoadingWorkspace,
-    error: workspaceError,
-  } = useGetOneWorkspace(workspaceId);
-  const {
-    channels,
-    isLoading: isLoadingChannels,
-    error: channelsError,
-  } = useGetChannels(workspaceId);
-  const { members, isLoading: isLoadingMembers, error: membersError } = useGetMembers(workspaceId);
+  const { response: responseWorkspace } = useGetOneWorkspace(workspaceId);
+  const { response: responseMember } = useCurrentMember(workspaceId);
+  const { response: responseChannels } = useGetChannels(workspaceId);
+  const { response: responseMembers } = useGetMembers(workspaceId);
 
   const onOpenCreateChannelModal = (): void => {
-    if (member?.role === "admin") setState({ workspaceId, isOpen: true });
+    if (responseMember?.data?.role === "admin") setState({ workspaceId, isOpen: true });
   };
 
-  if (memberError || workspaceError || channelsError || membersError) redirect("/");
+  if (
+    responseWorkspace === undefined ||
+    responseMember === undefined ||
+    responseChannels === undefined ||
+    responseMembers === undefined
+  )
+    return (
+      <div className={styles["sidebar-content-center"]}>
+        <Loader size={30} />
+      </div>
+    );
 
-  if (member === null || workspace === null || members === null)
+  if (
+    responseWorkspace?.isError ||
+    responseMember?.isError ||
+    responseChannels?.isError ||
+    responseMembers?.isError
+  )
+    redirect("/");
+
+  if (responseWorkspace?.data === null || responseMember?.data === null)
     return (
       <div className={styles["sidebar-content"]}>
         <div className={`${styles["sidebar-content-center"]}`}>
@@ -55,43 +65,40 @@ function SidebarContent(): JSX.Element {
 
   return (
     <div className={styles["sidebar-content"]}>
-      {isLoadingMember || isLoadingWorkspace || isLoadingChannels || isLoadingMembers ? (
-        <div className={styles["sidebar-content-center"]}>
-          <Loader size={30} />
-        </div>
-      ) : (
-        <div>
-          <SidebarContentHeader workspace={workspace!} isAdmin={member!.role === "admin"} />
-          <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
-          <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts-sent" />
-          <WorkspaceSection
-            label="Channels"
-            hint="New channel"
-            hideOnNew={member?.role === "member"}
-            onNew={onOpenCreateChannelModal}
-          >
-            {channels?.map((item) => (
-              <SidebarItem
-                key={item._id}
-                icon={HashIcon}
-                label={item.name}
-                id={item._id}
-                isActive={channelId === item._id}
-              />
-            ))}
-          </WorkspaceSection>
-          <WorkspaceSection label="Direct Messages" hint="New direct message" onNew={() => {}}>
-            {members?.map((item) => (
-              <SidebarMember
-                key={item._id}
-                image={item.user?.image}
-                label={item.user?.name ?? ""}
-                userId={item.userId}
-              />
-            ))}
-          </WorkspaceSection>
-        </div>
-      )}
+      <div>
+        <SidebarContentHeader
+          workspace={responseWorkspace.data!}
+          isAdmin={responseMember.data!.role === "admin"}
+        />
+        <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
+        <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts-sent" />
+        <WorkspaceSection
+          label="Channels"
+          hint="New channel"
+          hideOnNew={responseMember?.data.role === "member"}
+          onNew={onOpenCreateChannelModal}
+        >
+          {responseChannels?.data.map((item) => (
+            <SidebarItem
+              key={item._id}
+              icon={HashIcon}
+              label={item.name}
+              id={item._id}
+              isActive={channelId === item._id}
+            />
+          ))}
+        </WorkspaceSection>
+        <WorkspaceSection label="Direct Messages" hint="New direct message" onNew={() => {}}>
+          {responseMembers?.data.map((item) => (
+            <SidebarMember
+              key={item._id}
+              image={item.user?.image}
+              label={item.user?.name ?? ""}
+              userId={item.userId}
+            />
+          ))}
+        </WorkspaceSection>
+      </div>
     </div>
   );
 }

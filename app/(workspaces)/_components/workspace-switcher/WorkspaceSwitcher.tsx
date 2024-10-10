@@ -20,12 +20,8 @@ import DropdownItem from "../dropdown-item/DropdownItem";
 
 function WorkspaceSwitcher(): JSX.Element {
   const workspaceId = useWorkspaceId();
-  const {
-    workspace,
-    isLoading: workspaceIsLoading,
-    error: workspaceError,
-  } = useGetOneWorkspace(workspaceId);
-  const { workspaces, isLoading: workspacesIsLoading, error: workspacesError } = useGetWorkspaces();
+  const { response: responseWorkspace } = useGetOneWorkspace(workspaceId);
+  const { response: responseWorkspaces } = useGetWorkspaces();
 
   const [, setOpen] = useCreateWorkspaceModal();
 
@@ -40,25 +36,29 @@ function WorkspaceSwitcher(): JSX.Element {
   };
 
   const filteredWorkspaces = () => {
-    return workspaces?.filter((ws) => ws._id !== workspace?._id);
+    return responseWorkspaces?.data.filter((ws) => ws._id !== responseWorkspace?.data?._id);
   };
 
-  if (workspaceError || workspacesError) redirect("/");
+  if (responseWorkspace?.isError || responseWorkspaces?.isError) redirect("/");
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className={styles["ws-switcher-trigger"]}>
-          {workspaceIsLoading ? <Loader /> : formatName(workspace?.name ?? "")}
+          {responseWorkspace === undefined ? (
+            <Loader />
+          ) : (
+            formatName(responseWorkspace?.data?.name ?? "")
+          )}
         </Button>
       </DropdownMenuTrigger>
-      {!workspacesIsLoading && (
+      {!(responseWorkspaces === undefined) && (
         <DropdownMenuContent side="bottom" align="start">
           <DropdownMenuItem
             className={styles["ws-switcher-active"]}
-            onClick={() => navigateToWorkspace(workspace!._id)}
+            onClick={() => navigateToWorkspace(responseWorkspace!.data!._id)}
           >
-            <p>{workspace?.name}</p>
+            <p>{responseWorkspace?.data?.name}</p>
             <p>Workspace active</p>
           </DropdownMenuItem>
           {filteredWorkspaces()?.map((ws) => (
