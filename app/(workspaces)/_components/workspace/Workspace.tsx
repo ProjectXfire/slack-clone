@@ -7,23 +7,22 @@ import { useGetChannels } from "@/core/channels/services";
 import { useCurrentMember } from "@/core/members/services";
 import { useWorkspaceId } from "../../_hooks";
 import { useCreateChannelModal } from "../../_stores";
-import styles from "./Styles.module.css";
 import StartingLoader from "../loader/StartingLoader";
-import { CustomAlert } from "@/shared/components";
-import { TriangleAlert } from "lucide-react";
+import WorkspaceContentError from "../content-error/WorkspaceContentError";
 
 function Workspace() {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
   const [state, setState] = useCreateChannelModal();
 
-  const { workspace, isLoading: isLoadingWorkspace } = useGetOneWorkspace(workspaceId);
-  const { channels, isLoading: isLoadingChannels } = useGetChannels(workspaceId);
-  const { member, isLoading: isLoadingMember } = useCurrentMember(workspaceId);
+  const { response: responseWorkspace } = useGetOneWorkspace(workspaceId);
+  const { response: responseChannels } = useGetChannels(workspaceId);
+  const { response: responseMember } = useCurrentMember(workspaceId);
 
   const createNewChannel = (workspaceId: string): void => {
     if (!state.isOpen) {
-      if (member?.role === "admin") setState({ isOpen: true, workspaceId: workspaceId });
+      if (responseMember?.data?.role === "admin")
+        setState({ isOpen: true, workspaceId: workspaceId });
     }
   };
 
@@ -32,25 +31,31 @@ function Workspace() {
   };
 
   useEffect(() => {
-    if (isLoadingWorkspace || isLoadingChannels || isLoadingMember) return;
-    if (workspace && channels.length === 0) createNewChannel(workspace._id);
-    if (workspace && channels.length > 0) redirectToChannel(workspace._id, channels[0]._id);
+    if (
+      responseWorkspace === undefined ||
+      responseChannels === undefined ||
+      responseMember === undefined
+    )
+      return;
+    const { data: dataWorkspace } = responseWorkspace;
+    const { data: dataChannels } = responseChannels;
+    if (dataWorkspace && dataChannels.length === 0) createNewChannel(dataWorkspace._id);
+    if (dataWorkspace && dataChannels.length > 0)
+      redirectToChannel(dataWorkspace._id, dataChannels[0]._id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [workspaceId, isLoadingWorkspace, isLoadingChannels, workspace, state.isOpen]);
+  }, [responseWorkspace, responseChannels, responseMember, state.isOpen]);
 
-  if (isLoadingWorkspace || isLoadingChannels || isLoadingMember) return <StartingLoader />;
+  if (
+    responseWorkspace === undefined ||
+    responseChannels === undefined ||
+    responseMember === undefined
+  )
+    return <StartingLoader />;
 
   return (
     <>
-      {member?.role === "member" && (
-        <div className={styles["container-message"]}>
-          <CustomAlert
-            variant="destructive"
-            icon={<TriangleAlert />}
-            title="Error"
-            description="Channel does not exist"
-          />
-        </div>
+      {responseMember?.data?.role === "member" && (
+        <WorkspaceContentError description="Channel does not exist" />
       )}
     </>
   );

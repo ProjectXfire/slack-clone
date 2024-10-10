@@ -1,3 +1,13 @@
+.container-loader {
+  height: 50px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  color: var(--bg-color-light-2);
+}
+
 .container {
   height: 50px;
   padding: 0 10px;

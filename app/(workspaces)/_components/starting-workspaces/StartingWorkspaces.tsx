@@ -11,25 +11,21 @@ function StartingWorkspaces(): JSX.Element {
   const [openModal, setOpenModal] = useCreateWorkspaceModal();
   const router = useRouter();
 
-  const { isLoading, error, workspaces } = useGetWorkspaces();
-
-  const redirectToWorkspace = (workspaceId: string): void => {
-    router.replace(`/workspaces/${workspaceId}`);
-  };
+  const { response } = useGetWorkspaces();
 
   useEffect(() => {
-    if (isLoading) return;
-    if (workspaces && workspaces.length > 0) {
-      redirectToWorkspace(workspaces[0]._id);
+    if (response === undefined) return;
+    const { data, isError } = response;
+    if (isError) redirect("/error");
+    if (data.length > 0) {
+      router.replace(`/workspaces/${data[0]._id}`);
       return;
     }
     if (!openModal) {
       setOpenModal(true);
       return;
     }
-    if (error) redirect("/error");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openModal, isLoading, error]);
+  }, [openModal, response, router, setOpenModal]);
 
   return <StartingLoader />;
 }

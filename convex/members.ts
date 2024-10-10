@@ -1,23 +1,26 @@
+import { IResponse } from "../shared/interfaces";
 import { v } from "convex/values";
 import { mutation, query, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
+
+type Member = Doc<"members"> & { user: Doc<"users"> };
 
 export const get = query({
   args: { workspaceId: v.string() },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<IResponse<Member[]>> => {
     try {
       const userId = await getAuthUserId(ctx);
-      if (!userId) return "User ID not found";
+      if (!userId) return { isError: true, message: "User ID not found", data: [] };
       const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
-      if (!workspaceId) return "Invalid workspace ID";
+      if (!workspaceId) return { isError: false, message: "Invalid workspace ID", data: [] };
       const member = await ctx.db
         .query("members")
         .withIndex("by_workspace_id_user_id", (q) =>
           q.eq("workspaceId", workspaceId).eq("userId", userId)
         )
         .unique();
-      if (!member) return "Invalid member";
+      if (!member) return { isError: false, message: "Invalid member", data: [] };
       const members = await ctx.db
         .query("members")
         .withIndex("by_workspace_id", (q) => q.eq("workspaceId", workspaceId))
@@ -27,30 +30,31 @@ export const get = query({
         const user = await pupulateUser(ctx, item.userId);
         if (user) membersWithUser.push({ ...item, user });
       }
-      return membersWithUser;
+      return { isError: false, message: "Members successfully loaded", data: membersWithUser };
     } catch {
-      return "Failed to load the data";
+      return { isError: true, message: "Failed to load the data", data: [] };
     }
   },
 });
 
 export const current = query({
   args: { workspaceId: v.string() },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<IResponse<Doc<"members"> | null>> => {
     try {
       const userId = await getAuthUserId(ctx);
-      if (!userId) return "User ID not found";
+      if (!userId) return { isError: true, message: "User ID not found", data: null };
       const workspaceId = ctx.db.normalizeId("workspaces", args.workspaceId);
-      if (!workspaceId) return "Invalid workspace ID";
+      if (!workspaceId) return { isError: false, message: "Invalid workspace ID", data: null };
       const member = await ctx.db
         .query("members")
         .withIndex("by_workspace_id_user_id", (q) =>
           q.eq("workspaceId", workspaceId).eq("userId", userId)
         )
         .unique();
-      return member;
+      if (!member) return { isError: false, message: "You are not a member", data: null };
+      return { isError: false, message: "Member successfully loaded", data: member };
     } catch {
-      return "Failed to load the data";
+      return { isError: true, message: "Failed to load the data", data: null };
     }
   },
 });

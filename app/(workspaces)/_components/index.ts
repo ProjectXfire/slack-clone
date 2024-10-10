@@ -1,6 +1,8 @@
+export { default as ChannelHeader } from "./channel-header/ChannelHeader";
 export { default as JoinContainer } from "./containers/JoinContainer";
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as WorkspaceSection } from "./containers/WorkspaceSection";
+export { default as WorkspaceContentError } from "./content-error/WorkspaceContentError";
 export { default as CreateChannel } from "./dialogs/CreateChannel";
 export { default as CreateWorkspace } from "./dialogs/CreateWorkspace";
 export { default as DialogContainer } from "./dialogs/DialogContainer";
