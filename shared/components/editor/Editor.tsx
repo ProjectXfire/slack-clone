@@ -1,7 +1,7 @@
 "use client";
 
-import type { QuillOptions } from "quill";
-import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { MutableRefObject } from "react";
+import NextImage from "next/image";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import { Delta, Op } from "quill/core";
@@ -38,19 +38,50 @@ function Editor({
   onSubmit,
   onCancel,
 }: Props): JSX.Element {
-  const { containerRef, disabledRef, isEmpty, isToolbarVisible, toggleToolbar, onEmojiSelect } =
-    useEditor({
-      onSubmit,
-      defaultValue,
-      disabled,
-      innerRef,
-      placeholder,
-    });
+  const {
+    containerRef,
+    disabledRef,
+    inputImageRef,
+    isEmpty,
+    isToolbarVisible,
+    image,
+    toggleToolbar,
+    onEmojiSelect,
+    onSelectImage,
+    onOpenImageSelection,
+    onRemoveImage,
+  } = useEditor({
+    onSubmit,
+    defaultValue,
+    disabled,
+    innerRef,
+    placeholder,
+  });
 
   return (
     <div className={styles.container}>
       <div className={styles["editor-container"]}>
         <div ref={containerRef} />
+        {image && (
+          <div className={styles["editor-image-container"]}>
+            <NextImage
+              className={styles["editor-image"]}
+              src={URL.createObjectURL(image)}
+              fill
+              alt="image"
+            />
+            <Hint label="Remove image">
+              <button
+                className={styles["editor-image-close"]}
+                type="button"
+                name="remove-image"
+                onClick={onRemoveImage}
+              >
+                <X />
+              </button>
+            </Hint>
+          </div>
+        )}
         <div className={styles["editor-actions"]}>
           <Hint label={isToolbarVisible ? "Hide formatting" : "Show formatting"}>
             <Button type="button" variant="ghost" disabled={disabled} onClick={toggleToolbar}>
@@ -63,11 +94,20 @@ function Editor({
             </Button>
           </EmojiPopover>
           {variant === "create" && (
-            <Hint label="Image">
-              <Button type="button" variant="ghost">
-                <ImageIcon />
-              </Button>
-            </Hint>
+            <>
+              <input
+                accept="image/*"
+                ref={inputImageRef}
+                className={styles["editor-input-hide"]}
+                type="file"
+                onChange={onSelectImage}
+              />
+              <Hint label="Image">
+                <Button type="button" variant="ghost" onClick={onOpenImageSelection}>
+                  <ImageIcon />
+                </Button>
+              </Hint>
+            </>
           )}
           <FlexSpacer />
           {variant === "update" && (

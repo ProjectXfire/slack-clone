@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Quill, { QuillOptions } from "quill";
 import { Delta, Op } from "quill/core";
 
@@ -24,7 +24,9 @@ export function useEditor({
 }: EditorProps) {
   const [text, setText] = useState("");
   const [isToolbarVisible, setIsToolbarVisible] = useState(true);
+  const [image, setImage] = useState<File | null>(null);
 
+  const inputImageRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const submitRef = useRef(onSubmit);
   const placeholderRef = useRef(placeholder);
@@ -40,9 +42,26 @@ export function useEditor({
     if (toolbarElement) toolbarElement.classList.toggle("hidden");
   };
 
-  const onEmojiSelect = (emoji: string) => {
+  const onEmojiSelect = (emoji: string): void => {
     const quill = quillRef.current;
     quill?.insertText(quill.getSelection()?.index || 0, emoji);
+  };
+
+  const onOpenImageSelection = () => {
+    inputImageRef.current?.click();
+  };
+
+  const onSelectImage = (e: ChangeEvent<HTMLInputElement>): void => {
+    const files = e.target.files;
+    if (!files) return;
+    const file = files[0];
+    console.log(file);
+    setImage(file);
+  };
+
+  const onRemoveImage = (): void => {
+    setImage(null);
+    inputImageRef.current!.value = "";
   };
 
   useLayoutEffect(() => {
@@ -104,9 +123,14 @@ export function useEditor({
   return {
     isToolbarVisible,
     isEmpty,
+    image,
     disabledRef,
+    inputImageRef,
     containerRef,
     toggleToolbar,
     onEmojiSelect,
+    onOpenImageSelection,
+    onSelectImage,
+    onRemoveImage,
   };
 }

@@ -28,6 +28,47 @@
   height: 17px;
 }
 
+.editor-input-hide {
+  display: none;
+}
+
+.editor-image-container {
+  width: 100px;
+  height: 100px;
+  margin: 5px 10px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.editor-image-container:hover .editor-image-close {
+  opacity: 1;
+}
+
+.editor-image {
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.editor-image-close {
+  padding: 5px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color-light);
+  border: 3px solid var(--bg-color-light-2);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.editor-image-close svg {
+  width: 15px;
+  height: 15px;
+  color: var(--bg-color-light-2);
+}
+
 .editor-footer {
   align-self: flex-end;
   font-size: 0.8rem;
