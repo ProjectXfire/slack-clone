@@ -31,4 +31,9 @@
 .editor-footer {
   align-self: flex-end;
   font-size: 0.8rem;
+  opacity: 1;
+}
+
+.editor-footer--hide {
+  opacity: 0;
 }
