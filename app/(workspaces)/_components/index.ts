@@ -1,4 +1,5 @@
 export { default as ChannelHeader } from "./channel-header/ChannelHeader";
+export { default as ChatInput } from "./chat-input/ChatInput";
 export { default as JoinContainer } from "./containers/JoinContainer";
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as WorkspaceSection } from "./containers/WorkspaceSection";

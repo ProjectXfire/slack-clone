@@ -1,0 +1,8 @@
+.container {
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  scrollbar-color: var(--bg-hover) var(--bg-color);
+  scrollbar-width: thin;
+}

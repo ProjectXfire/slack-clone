@@ -32,7 +32,8 @@ li {
     --bg-color: rgb(46, 0, 82);
     --bg-hover: rgb(120, 19, 197);
     --bg-color-light: rgb(149, 59, 218);
-    --bg-color-light-2: rgba(244, 230, 255);
+    --bg-color-light-2: rgb(244, 230, 255);
+    --bg-color-light-3: rgb(189, 163, 211);
     --bg-avatar: rgb(225, 207, 238);
 
     /* Tailwind variables */
@@ -106,4 +107,69 @@ input {
 
 p {
   margin: 0;
+}
+
+.ql-toolbar {
+  border: none !important;
+  background-color: var(--bg-color-light);
+}
+
+.ql-toolbar .ql-formats:not(:last-child) {
+  border-right: 1px solid var(--bg-color-light-3) !important;
+  padding-right: 12px !important;
+}
+
+.ql-toolbar .ql-formats button {
+  margin-left: 2px !important;
+  background-color: var(--bg-color-light-2) !important;
+  border-radius: 5px !important;
+}
+
+.ql-header.ql-picker {
+  background-color: var(--bg-color-light-2) !important;
+  background-color: var(--bg-color-light-2) !important;
+}
+
+.ql-picker-options {
+  height: 100px;
+  overflow: auto;
+  scrollbar-color: var(--bg-hover) var(--bg-color);
+  scrollbar-width: thin;
+}
+
+.ql-container {
+  height: unset !important;
+  border: none !important;
+  font-family: "inter", sans-serif !important;
+}
+
+.ql-editor {
+  padding: 8px 12px !important;
+  line-height: 22px !important;
+  color: var(--bg-color);
+  font-weight: 400;
+  font-family: "inter", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.ql-editor a {
+  color: red !important;
+}
+
+.ql-editor a:hover {
+  text-decoration: underline !important;
+}
+
+.ql-renderer {
+  padding: 0 !important;
+}
+
+.ql-editor::before {
+  left: 12px !important;
+  font-family: "inter", sans-serif !important;
+  color: var(--bg-color-light-3) !important;
+  font-style: normal !important;
+  font-size: 14px !important;
+  font-weight: 400;
+  @apply truncate;
 }
