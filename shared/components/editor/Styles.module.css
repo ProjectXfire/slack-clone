@@ -12,6 +12,10 @@
   overflow: hidden;
 }
 
+.editor-container--disable {
+  opacity: 0.5;
+}
+
 .editor-actions {
   padding: 5px 5px;
   display: flex;

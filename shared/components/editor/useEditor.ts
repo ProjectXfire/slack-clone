@@ -55,8 +55,23 @@ export function useEditor({
     const files = e.target.files;
     if (!files) return;
     const file = files[0];
-    console.log(file);
     setImage(file);
+  };
+
+  const handleSubmit = (): void => {
+    onSubmit({ body: JSON.stringify(quillRef.current?.getContents()), image });
+  };
+
+  const handleSubmitOnEnter = (quill: Quill): void => {
+    const text = quill.getText();
+    const addedImage = inputImageRef.current?.files?.[0] || null;
+    const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+    if (isEmpty) return;
+    const body = JSON.stringify(quill.getContents());
+    submitRef.current?.({ body, image: addedImage });
+    if (inputImageRef && inputImageRef.current) inputImageRef.current.value = "";
+    setImage(null);
+    quill.setContents([]);
   };
 
   const onRemoveImage = (): void => {
@@ -89,6 +104,7 @@ export function useEditor({
             enter: {
               key: "Enter",
               handler: () => {
+                handleSubmitOnEnter(quill);
                 return;
               },
             },
@@ -120,6 +136,16 @@ export function useEditor({
     };
   }, []);
 
+  useEffect(() => {
+    if (!quillRef) return;
+    if (!quillRef.current) return;
+    if (disabled) {
+      quillRef.current.enable(false);
+    } else {
+      quillRef.current.enable(true);
+    }
+  }, [disabled]);
+
   return {
     isToolbarVisible,
     isEmpty,
@@ -132,5 +158,6 @@ export function useEditor({
     onOpenImageSelection,
     onSelectImage,
     onRemoveImage,
+    handleSubmit,
   };
 }

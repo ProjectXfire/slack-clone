@@ -14,7 +14,7 @@ import FlexSpacer from "../spacer/FlexSpacer";
 import { useEditor } from "./useEditor";
 import EmojiPopover from "../emoji-popover/EmojiPopover";
 
-type EditorValue = {
+export type EditorValue = {
   image: File | null;
   body: string;
 };
@@ -50,6 +50,7 @@ function Editor({
     onSelectImage,
     onOpenImageSelection,
     onRemoveImage,
+    handleSubmit,
   } = useEditor({
     onSubmit,
     defaultValue,
@@ -60,7 +61,9 @@ function Editor({
 
   return (
     <div className={styles.container}>
-      <div className={styles["editor-container"]}>
+      <form
+        className={`${styles["editor-container"]} ${disabled && styles["editor-container--disable"]}`}
+      >
         <div ref={containerRef} />
         {image && (
           <div className={styles["editor-image-container"]}>
@@ -89,7 +92,7 @@ function Editor({
             </Button>
           </Hint>
           <EmojiPopover onEmojiSelect={onEmojiSelect}>
-            <Button type="button" variant="ghost">
+            <Button type="button" variant="ghost" disabled={disabled}>
               <Smile />
             </Button>
           </EmojiPopover>
@@ -100,10 +103,16 @@ function Editor({
                 ref={inputImageRef}
                 className={styles["editor-input-hide"]}
                 type="file"
+                disabled={disabled}
                 onChange={onSelectImage}
               />
               <Hint label="Image">
-                <Button type="button" variant="ghost" onClick={onOpenImageSelection}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  disabled={disabled}
+                  onClick={onOpenImageSelection}
+                >
                   <ImageIcon />
                 </Button>
               </Hint>
@@ -112,21 +121,37 @@ function Editor({
           <FlexSpacer />
           {variant === "update" && (
             <>
-              <Button type="button" name="close-editor" variant="outline" disabled={disabled}>
+              <Button
+                type="button"
+                name="close-editor"
+                variant="outline"
+                disabled={disabled}
+                onClick={onCancel}
+              >
                 <X />
               </Button>
-              <Button type="button" name="update-editor" disabled={disabled || isEmpty}>
+              <Button
+                type="button"
+                name="update-editor"
+                disabled={disabled || isEmpty}
+                onClick={handleSubmit}
+              >
                 <Save />
               </Button>
             </>
           )}
           {variant === "create" && (
-            <Button type="button" name="create-editor" disabled={disabledRef.current || isEmpty}>
+            <Button
+              type="button"
+              name="create-editor"
+              disabled={disabledRef.current || isEmpty}
+              onClick={handleSubmit}
+            >
               <Send />
             </Button>
           )}
         </div>
-      </div>
+      </form>
       <p className={`${styles["editor-footer"]} ${isEmpty && styles["editor-footer--hide"]}`}>
         <strong>Shift + Return</strong> to add a new line
       </p>
