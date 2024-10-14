@@ -69,9 +69,6 @@ export function useEditor({
     if (isEmpty) return;
     const body = JSON.stringify(quill.getContents());
     submitRef.current?.({ body, image: addedImage });
-    if (inputImageRef && inputImageRef.current) inputImageRef.current.value = "";
-    setImage(null);
-    quill.setContents([]);
   };
 
   const onRemoveImage = (): void => {
@@ -135,16 +132,6 @@ export function useEditor({
       if (innerRef) innerRef.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    if (!quillRef) return;
-    if (!quillRef.current) return;
-    if (disabled) {
-      quillRef.current.enable(false);
-    } else {
-      quillRef.current.enable(true);
-    }
-  }, [disabled]);
 
   return {
     isToolbarVisible,
