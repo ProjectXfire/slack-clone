@@ -50,7 +50,7 @@ export const create = mutation({
       });
       return { isError: false, message: "Message created successfully", data: messageId };
     } catch {
-      return { isError: true, message: "Failed to load the data", data: null };
+      return { isError: true, message: "Failed to create the data", data: null };
     }
   },
 });
