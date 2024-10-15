@@ -10,6 +10,7 @@ export const create = mutation({
     image: v.optional(v.id("_storage")),
     workspaceId: v.string(),
     channelId: v.optional(v.string()),
+    conversationId: v.optional(v.string()),
     parentMessageId: v.optional(v.string()),
   },
   handler: async (ctx, args): Promise<IResponse<string | null>> => {
@@ -21,11 +22,6 @@ export const create = mutation({
       if (!workspaceId) return { isError: true, message: "Invalid workspace ID", data: null };
       const member = await getMember(ctx, workspaceId, userId);
       if (!member) return { isError: true, message: "Member not found", data: null };
-      /*let imageId = undefined;
-      if (args.image) {
-        imageId = ctx.db.normalizeId("_storage", args.image);
-        if (!imageId) return { isError: true, message: "Invalid image ID", data: null };
-      }*/
       let channelId = undefined;
       if (args.channelId) {
         channelId = ctx.db.normalizeId("channels", args.channelId);
@@ -37,9 +33,19 @@ export const create = mutation({
         if (!parentMessageId)
           return { isError: true, message: "Invalid parent message ID", data: null };
       }
-
-      // Todo: handle conversation
-
+      let conversationId = undefined;
+      if (args.conversationId) {
+        conversationId = ctx.db.normalizeId("conversations", args.conversationId);
+        if (!conversationId)
+          return { isError: true, message: "Invalid conversation ID", data: null };
+      }
+      // Only possible if we are replying in a 1 to 1 conversation thread
+      if (!conversationId && !channelId && parentMessageId) {
+        const parentMessage = await ctx.db.get(parentMessageId);
+        if (!parentMessage)
+          return { isError: true, message: "Parent message ID not found", data: null };
+        conversationId = parentMessage.conversationId;
+      }
       const messageId = await ctx.db.insert("messages", {
         workspaceId,
         body,
@@ -47,6 +53,7 @@ export const create = mutation({
         memberId: member._id,
         channelId,
         parentMessageId,
+        conversationId,
       });
       return { isError: false, message: "Message created successfully", data: messageId };
     } catch {
