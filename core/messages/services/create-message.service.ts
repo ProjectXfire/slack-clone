@@ -9,6 +9,7 @@ type RequestType = {
   workspaceId: string;
   channelId?: string;
   parentMessageId?: string;
+  conversationId?: string;
 };
 type ResponseType = { message: string; data: string };
 
