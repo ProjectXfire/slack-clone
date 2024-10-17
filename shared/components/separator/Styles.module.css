@@ -1,0 +1,18 @@
+.separator {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.separator div {
+  flex: 1;
+  height: 1px;
+  background-color: var(--bg-color-light-3);
+}
+
+.separator span {
+  padding: 5px 15px;
+  border: 1px solid var(--bg-color-light-3);
+  border-radius: 15px;
+  font-size: 0.75rem;
+}

@@ -1,0 +1,80 @@
+.message {
+  padding: 2px 10px;
+  cursor: default;
+  transition: background-color 200ms ease-in-out;
+}
+
+.message-time {
+  display: flex;
+  gap: 8px;
+}
+
+.message-time-button {
+  align-self: flex-start;
+  opacity: 0;
+  font-size: 0.8rem;
+  color: var(--bg-color-light);
+  transition: opacity 200ms ease-in-out;
+}
+
+.message:hover .message-time-button {
+  opacity: 1;
+}
+
+.message-time-button:hover {
+  text-decoration: underline;
+}
+
+.message:hover {
+  background-color: var(--bg-avatar);
+}
+
+.message-user {
+  display: flex;
+  gap: 10px;
+}
+
+.message-user button {
+  align-self: flex-start;
+}
+
+.message-user-avatar {
+  width: 30px;
+  height: 30px;
+}
+
+.message-user-fallback {
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.message-author {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.message-author-actions {
+  display: flex;
+}
+
+.message-author-actions button {
+  font-size: 0.8rem;
+}
+
+.message-author-actions button:nth-child(1) {
+  font-weight: bold;
+}
+
+.message-author-actions-time {
+  color: var(--bg-color-light-3);
+}
+
+.message-author-actions button:hover {
+  text-decoration: underline;
+}
+
+.message-edited {
+  font-size: 0.8rem;
+  color: var(--bg-color-light-3);
+}

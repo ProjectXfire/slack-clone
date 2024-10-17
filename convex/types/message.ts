@@ -1,13 +1,12 @@
-import type { Id } from "@/convex/_generated/dataModel";
-import { User } from "@/core/auth/models";
+import { Doc, Id } from "../_generated/dataModel";
 
-export type Reactions = {
+type Reactions = {
   value: string;
   count: number;
   reactions: Id<"members">[];
 };
 
-export type Thread = {
+type Thread = {
   count: number;
   image?: string;
   timestamp: number;
@@ -23,8 +22,7 @@ export interface Message {
   channelId?: Id<"channels">;
   conversationId?: Id<"conversations">;
   parentMessageId?: Id<"messages">;
-  member: User | null;
+  member: Doc<"users"> | null;
   reactions: Reactions[];
   thread: Thread;
-  updatedAt?: number;
 }

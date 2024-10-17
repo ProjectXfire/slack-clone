@@ -1,5 +1,9 @@
-.container {
+.main-container {
   width: 100%;
+  background-color: var(--bg-color-light-2);
+}
+
+.container {
   padding: 5px 10px;
 }
 

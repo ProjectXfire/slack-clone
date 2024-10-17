@@ -3,6 +3,7 @@ import { v } from "convex/values";
 import { mutation, query, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Doc, Id } from "./_generated/dataModel";
+import { pupulateUser } from "./users";
 
 type Member = Doc<"members"> & { user: Doc<"users"> };
 
@@ -84,6 +85,6 @@ export const create = mutation({
   },
 });
 
-function pupulateUser(ctx: QueryCtx, id: Id<"users">) {
+export function populateMember(ctx: QueryCtx, id: Id<"members">) {
   return ctx.db.get(id);
 }
