@@ -1,6 +1,7 @@
 export { default as ChannelHeader } from "./channel-header/ChannelHeader";
 export { default as ChatInput } from "./chat-input/ChatInput";
 export { default as JoinContainer } from "./containers/JoinContainer";
+export { default as MessagesContent } from "./containers/MessagesContent";
 export { default as WorkspaceContent } from "./containers/WorkspaceContent";
 export { default as WorkspaceSection } from "./containers/WorkspaceSection";
 export { default as WorkspaceContentError } from "./content-error/WorkspaceContentError";
@@ -10,6 +11,9 @@ export { default as DialogContainer } from "./dialogs/DialogContainer";
 export { default as InvitePeople } from "./dialogs/InvitePeople";
 export { default as DropdownItem } from "./dropdown-item/DropdownItem";
 export { default as StartingLoader } from "./loader/StartingLoader";
+export { default as MessageList } from "./message-list/MessageList";
+export { default as MemberMessage } from "./message/MemberMessage";
+export { default as RenderText } from "./render-text/RenderText";
 export { default as ResizableContent } from "./resizable-content/ResizableContent";
 export { default as Sidebar } from "./sidebar/Sidebar";
 export { default as SidebarButton } from "./sidebar/SidebarButton";

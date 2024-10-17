@@ -66,7 +66,7 @@ export function useEditor({
     const text = quill.getText();
     const addedImage = inputImageRef.current?.files?.[0] || null;
     const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
-    if (isEmpty) return;
+    if (isEmpty && !addedImage) return;
     const body = JSON.stringify(quill.getContents());
     submitRef.current?.({ body, image: addedImage });
   };

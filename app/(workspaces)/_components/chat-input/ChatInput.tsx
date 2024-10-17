@@ -96,7 +96,7 @@ function ChatInput({ placeholder }: Props): JSX.Element {
         key={editorKey}
         placeholder={placeholder}
         onSubmit={handleSubmit}
-        disabled={isPendingMessage}
+        disabled={isPendingMessage || isPendingUrl}
         innerRef={editorRef}
       />
     </div>

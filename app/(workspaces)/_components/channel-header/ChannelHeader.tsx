@@ -37,7 +37,7 @@ function ChannelHeader({ title, channelId, workspaceId }: Props): JSX.Element {
   } = useChannelHeader({ channelId, workspaceId, title });
 
   return (
-    <>
+    <div className={styles["main-container"]}>
       <ConfirmComponent />
       <div className={styles.container}>
         {member?.data?.role === "admin" ? (
@@ -99,7 +99,7 @@ function ChannelHeader({ title, channelId, workspaceId }: Props): JSX.Element {
         )}
       </div>
       <Separator />
-    </>
+    </div>
   );
 }
 export default ChannelHeader;

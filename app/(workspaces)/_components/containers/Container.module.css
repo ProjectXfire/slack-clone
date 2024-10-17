@@ -68,3 +68,12 @@
   align-items: center;
   gap: 15px;
 }
+
+/* Messages content */
+
+.messages-content {
+  height: calc(100dvh - 50px);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+}
