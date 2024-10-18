@@ -3,6 +3,7 @@
   grid-template-columns: 1fr;
   padding: 5px 0px;
   overflow: auto;
+  gap: 15px;
   scrollbar-color: var(--bg-hover) var(--bg-color);
   scrollbar-width: thin;
 }

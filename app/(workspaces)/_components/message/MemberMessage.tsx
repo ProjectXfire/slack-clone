@@ -2,10 +2,11 @@
 
 import type { Reactions, Thread } from "@/core/messages/models";
 import dynamic from "next/dynamic";
-import styles from "./Styles.module.css";
 import { format } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage, Hint, Thumbnail } from "@/shared/components";
 import { formatFullTime, formatName } from "@/shared/utils";
+import styles from "./Styles.module.css";
+import { Avatar, AvatarFallback, AvatarImage, Hint, Thumbnail } from "@/shared/components";
+import MessageToolbar from "../message-toolbar/MessageToolbar";
 
 interface Props {
   id: string;
@@ -18,7 +19,7 @@ interface Props {
   image?: string | null;
   createdAt: number;
   updatedAt?: number;
-  setEditingId: () => void;
+  setEditingId: (id: string) => void;
   isAuthor?: boolean;
   isEditing?: boolean;
   isCompact?: boolean;
@@ -87,6 +88,17 @@ function MemberMessage({
           {image && <Thumbnail url={image} />}
           {updatedAt && <span className={styles["message-edited"]}>(edited)</span>}
         </div>
+      </div>
+      <div className={styles["message-toolbar-container"]}>
+        <MessageToolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          hideThreadButton={hideThreadButton}
+          handleDelete={() => {}}
+          handleThread={() => {}}
+          handleEdit={() => setEditingId(id)}
+          handleReactions={() => {}}
+        />
       </div>
     </div>
   );

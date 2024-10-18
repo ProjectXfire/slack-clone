@@ -57,7 +57,7 @@ export const get = query({
         const thread = await populateThread(ctx, message._id);
         const image = message.image ? await ctx.storage.getUrl(message.image) : undefined;
         const countReactions = handleCountReactions(reactions);
-        messages.push({ ...message, member: user, image, reactions: countReactions, thread });
+        messages.unshift({ ...message, member: user, image, reactions: countReactions, thread });
       }
       return { ...results, page: messages };
     } catch {

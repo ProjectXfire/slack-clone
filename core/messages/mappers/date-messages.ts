@@ -9,7 +9,7 @@ export function messsagesByDate(data: Message[]) {
       if (!groups[dateKey]) {
         groups[dateKey] = [];
       }
-      groups[dateKey].unshift(message);
+      groups[dateKey].push(message);
       return groups;
     },
     {} as Record<string, Message[]>

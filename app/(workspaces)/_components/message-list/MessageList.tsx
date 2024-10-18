@@ -1,12 +1,16 @@
 "use client";
 
 import type { Message } from "@/core/messages/models";
+import { differenceInMinutes } from "date-fns";
 import styles from "./Styles.module.css";
 import { messsagesByDate } from "@/core/messages/mappers";
 import { formatDateLabel } from "@/shared/utils";
-import { FlexSpacer, SeparatorLabel } from "@/shared/components";
+import { SeparatorLabel } from "@/shared/components";
 import MemberMessage from "../message/MemberMessage";
-import { differenceInMinutes } from "date-fns";
+import ChannelHero from "../channel-hero/ChannelHero";
+import { useState } from "react";
+import { useCurrentMember } from "@/core/members/services";
+import { useWorkspaceId } from "../../_hooks";
 
 interface Props {
   memberName?: string;
@@ -31,9 +35,19 @@ function MessageList({
   variant = "channel",
 }: Props): JSX.Element {
   const messagesGrouped = messsagesByDate(data);
+  const [isEditing, setIsEditing] = useState<null | string>(null);
+  const workspaceId = useWorkspaceId();
+  const { response } = useCurrentMember(workspaceId);
+
+  const handleEditing = (id: string): void => {
+    setIsEditing(id);
+  };
 
   return (
     <ul className={styles.container}>
+      {variant === "channel" && channelName && channelCreationTime && (
+        <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
       {Object.entries(messagesGrouped).map(([key, messages]) => (
         <li key={key}>
           <SeparatorLabel label={formatDateLabel(key)} />
@@ -59,11 +73,11 @@ function MessageList({
                 image={msg.image}
                 createdAt={msg._creationTime}
                 updatedAt={msg.updatedAt}
-                setEditingId={() => {}}
-                isAuthor={false}
-                isEditing={false}
+                setEditingId={handleEditing}
+                isAuthor={msg.memberId === response?.data?._id}
+                isEditing={!!isEditing}
                 isCompact={isCompact}
-                hideThreadButton={false}
+                hideThreadButton={variant === "thread"}
               />
             );
           })}
