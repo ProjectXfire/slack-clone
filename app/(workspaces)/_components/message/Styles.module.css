@@ -1,5 +1,8 @@
 .message {
   padding: 2px 10px;
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
   cursor: default;
   transition: background-color 200ms ease-in-out;
 }
@@ -77,4 +80,13 @@
 .message-edited {
   font-size: 0.8rem;
   color: var(--bg-color-light-3);
+}
+
+.message-toolbar-container {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.message:hover .message-toolbar-container {
+  opacity: 1;
 }

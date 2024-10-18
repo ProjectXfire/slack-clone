@@ -4,5 +4,7 @@ import { useQuery } from "convex/react";
 export function useCurrentMember(workspaceId: string) {
   const response = useQuery(api.members.current, { workspaceId });
 
-  return { response };
+  const isLoading = response === undefined;
+
+  return { response, isLoading };
 }

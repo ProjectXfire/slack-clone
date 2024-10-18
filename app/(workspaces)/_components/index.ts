@@ -1,4 +1,5 @@
 export { default as ChannelHeader } from "./channel-header/ChannelHeader";
+export { default as ChannelHero } from "./channel-hero/ChannelHero";
 export { default as ChatInput } from "./chat-input/ChatInput";
 export { default as JoinContainer } from "./containers/JoinContainer";
 export { default as MessagesContent } from "./containers/MessagesContent";
@@ -12,6 +13,7 @@ export { default as InvitePeople } from "./dialogs/InvitePeople";
 export { default as DropdownItem } from "./dropdown-item/DropdownItem";
 export { default as StartingLoader } from "./loader/StartingLoader";
 export { default as MessageList } from "./message-list/MessageList";
+export { default as MessageToolbar } from "./message-toolbar/MessageToolbar";
 export { default as MemberMessage } from "./message/MemberMessage";
 export { default as RenderText } from "./render-text/RenderText";
 export { default as ResizableContent } from "./resizable-content/ResizableContent";
