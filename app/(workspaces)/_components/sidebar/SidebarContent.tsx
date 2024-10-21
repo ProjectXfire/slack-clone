@@ -6,7 +6,7 @@ import { useCurrentMember, useGetMembers } from "@/core/members/services";
 import { useGetOneWorkspace } from "@/core/workspaces/services";
 import { useGetChannels } from "@/core/channels/services";
 import { useCreateChannelModal } from "../../_stores";
-import { useChannelId, useWorkspaceId } from "../../_hooks";
+import { useChannelId, useMemberId, useWorkspaceId } from "../../_hooks";
 import styles from "./Sidebar.module.css";
 import { AlertTriangle, HashIcon, MessageSquareText, SendHorizonal } from "lucide-react";
 import { CustomAlert, Loader } from "@/shared/components";
@@ -18,6 +18,7 @@ import SidebarMember from "./SidebarMember";
 function SidebarContent(): JSX.Element {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
+  const memberId = useMemberId();
   const [, setState] = useCreateChannelModal();
 
   const { response: responseWorkspace } = useGetOneWorkspace(workspaceId);
@@ -95,6 +96,7 @@ function SidebarContent(): JSX.Element {
               image={item.user?.image}
               label={item.user?.name ?? ""}
               userId={item.userId}
+              isActive={memberId === item.userId}
             />
           ))}
         </WorkspaceSection>

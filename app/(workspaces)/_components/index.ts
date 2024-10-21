@@ -15,6 +15,7 @@ export { default as StartingLoader } from "./loader/StartingLoader";
 export { default as MessageList } from "./message-list/MessageList";
 export { default as MessageToolbar } from "./message-toolbar/MessageToolbar";
 export { default as MemberMessage } from "./message/MemberMessage";
+export { default as ReactedIcons } from "./reacted-icons/ReactedIcons";
 export { default as RenderText } from "./render-text/RenderText";
 export { default as ResizableContent } from "./resizable-content/ResizableContent";
 export { default as Sidebar } from "./sidebar/Sidebar";

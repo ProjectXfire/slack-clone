@@ -3,7 +3,11 @@
 import type { Reactions, Thread } from "@/core/messages/models";
 import dynamic from "next/dynamic";
 import { format } from "date-fns";
-import { useDeleteMessage, useUpdateMessage } from "@/core/messages/services";
+import {
+  useDeleteMessage,
+  useToggleReactMessage,
+  useUpdateMessage,
+} from "@/core/messages/services";
 import { useToast } from "@/shared/hooks";
 import { formatFullTime, formatName } from "@/shared/utils";
 import styles from "./Styles.module.css";
@@ -16,6 +20,7 @@ import {
   useConfirm,
 } from "@/shared/components";
 import MessageToolbar from "../message-toolbar/MessageToolbar";
+import ReactedIcons from "../reacted-icons/ReactedIcons";
 
 interface Props {
   id: string;
@@ -58,12 +63,13 @@ function MemberMessage({
   const { toast } = useToast();
   const { mutate: updateMessage, isPending: isPendingUpdateMessage } = useUpdateMessage();
   const { mutate: deleteMessage, isPending: isPendingDeleteMessage } = useDeleteMessage();
+  const { mutate: toggleMessageReaction, isPending: isPendingReaction } = useToggleReactMessage();
   const [ConfirmComponent, confirm] = useConfirm({
     title: "Message",
     message: "Are you sure to delete it?, this action cannot be undone.",
   });
 
-  const isPending = isPendingUpdateMessage || isPendingDeleteMessage;
+  const isPending = isPendingUpdateMessage || isPendingDeleteMessage || isPendingReaction;
 
   const handleUpdateMessage = (body: string): void => {
     updateMessage(
@@ -84,6 +90,22 @@ function MemberMessage({
             duration: 3000,
           });
           setEditingId(null);
+        },
+      }
+    );
+  };
+
+  const handleReaction = (value: string) => {
+    toggleMessageReaction(
+      { value, messageId: id },
+      {
+        onError: (err) => {
+          toast({
+            variant: "destructive",
+            title: "Message",
+            description: err,
+            duration: 3000,
+          });
         },
       }
     );
@@ -136,9 +158,10 @@ function MemberMessage({
               />
             </div>
           ) : (
-            <div>
+            <div className={styles["message-text-block"]}>
               <RenderText text={body} />
               {image && <Thumbnail url={image} />}
+              <ReactedIcons reactions={reactions} memberId={memberId} onChange={handleReaction} />
               {updatedAt && <span className={styles["message-edited"]}>(edited)</span>}
             </div>
           )}
@@ -153,7 +176,7 @@ function MemberMessage({
               handleDelete={handleDeleteMessage}
               handleThread={() => {}}
               handleEdit={() => setEditingId(id)}
-              handleReactions={() => {}}
+              handleReactions={handleReaction}
             />
           )}
         </div>
@@ -194,9 +217,12 @@ function MemberMessage({
                 </button>
               </Hint>
             </div>
-            <RenderText text={body} />
-            {image && <Thumbnail url={image} />}
-            {updatedAt && <span className={styles["message-edited"]}>(edited)</span>}
+            <div className={styles["message-text-block"]}>
+              <RenderText text={body} />
+              {image && <Thumbnail url={image} />}
+              <ReactedIcons reactions={reactions} memberId={memberId} onChange={handleReaction} />
+              {updatedAt && <span className={styles["message-edited"]}>(edited)</span>}
+            </div>
           </div>
         )}
       </div>
@@ -210,7 +236,7 @@ function MemberMessage({
             handleDelete={handleDeleteMessage}
             handleThread={() => {}}
             handleEdit={() => setEditingId(id)}
-            handleReactions={() => {}}
+            handleReactions={handleReaction}
           />
         )}
       </div>

@@ -4,7 +4,7 @@ import { User } from "@/core/auth/models";
 export type Reactions = {
   value: string;
   count: number;
-  reactions: Id<"members">[];
+  reactions: string[];
 };
 
 export type Thread = {

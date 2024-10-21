@@ -1,12 +1,13 @@
 import type { IResponse } from "../shared/interfaces";
 import type { Message } from "./types/message";
 import { v } from "convex/values";
+import { paginationOptsValidator, PaginationResult } from "convex/server";
 import { mutation, query, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Doc, Id } from "./_generated/dataModel";
-import { populateMember } from "./members";
+import { Id } from "./_generated/dataModel";
 import { pupulateUser } from "./users";
-import { paginationOptsValidator, PaginationResult } from "convex/server";
+import { getMember, populateMember } from "./members";
+import { handleCountReactions, populateReactions } from "./reactions";
 
 export const get = query({
   args: {
@@ -171,19 +172,6 @@ export const remove = mutation({
   },
 });
 
-function getMember(
-  ctx: QueryCtx,
-  workspaceId: Id<"workspaces">,
-  userId: Id<"users">
-): Promise<Doc<"members"> | null> {
-  return ctx.db
-    .query("members")
-    .withIndex("by_workspace_id_user_id", (q) =>
-      q.eq("workspaceId", workspaceId).eq("userId", userId)
-    )
-    .unique();
-}
-
 async function populateThread(
   ctx: QueryCtx,
   id: Id<"messages">
@@ -202,37 +190,4 @@ async function populateThread(
     image: lastMessageUser?.image,
     timestamp: lastMessage._creationTime,
   };
-}
-
-function populateReactions(ctx: QueryCtx, id: Id<"messages">) {
-  return ctx.db
-    .query("reactions")
-    .withIndex("by_message_id", (q) => q.eq("messageId", id))
-    .collect();
-}
-
-function handleCountReactions(reactions: Doc<"reactions">[]) {
-  const reactionsObj: Record<string, { count: number; reactions: Id<"members">[] }> = {};
-  const reactionsArray: Array<{ value: string; count: number; reactions: Id<"members">[] }> = [];
-  for (let i = 0; i < reactions.length; i++) {
-    if (!reactionsObj[reactions[i].value]) {
-      reactionsObj[reactions[i].value].count = 1;
-      reactionsObj[reactions[i].value].reactions = [reactions[i].memberId];
-    } else {
-      reactionsObj[reactions[i].value].count++;
-      reactionsObj[reactions[i].value].reactions = [
-        ...reactionsObj[reactions[i].value].reactions,
-        reactions[i].memberId,
-      ];
-    }
-  }
-  for (const key in reactionsObj) {
-    const newReactionObj = {
-      value: key,
-      count: reactionsObj[key].count,
-      reactions: reactionsObj[key].reactions,
-    };
-    reactionsArray.push(newReactionObj);
-  }
-  return reactionsArray;
 }

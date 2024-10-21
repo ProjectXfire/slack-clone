@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.reaction {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 1px 8px;
+}
+
+.reaction__plus {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color-light);
+  border-radius: 20px;
+}
+
+.reaction__plus:hover {
+  opacity: 0.8;
+}
+
+.reaction__plus svg {
+  width: 17px;
+  height: 17px;
+  color: var(--white);
+}
+
+.reaction__icon {
+  font-size: 16px;
+}
+
+.reaction__counter {
+  font-size: 12px;
+}
+
+.reaction--own {
+  border: 1px solid var(--bg-color-light-3);
+  background-color: var(--bg-color-light-4);
+  color: var(--bg-color);
+}
