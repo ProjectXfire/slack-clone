@@ -39,7 +39,7 @@ function MessageList({
   const workspaceId = useWorkspaceId();
   const { response } = useCurrentMember(workspaceId);
 
-  const handleEditing = (id: string): void => {
+  const handleEditing = (id: string | null): void => {
     setIsEditing(id);
   };
 
@@ -75,7 +75,7 @@ function MessageList({
                 updatedAt={msg.updatedAt}
                 setEditingId={handleEditing}
                 isAuthor={msg.memberId === response?.data?._id}
-                isEditing={!!isEditing}
+                isEditing={isEditing === msg._id}
                 isCompact={isCompact}
                 hideThreadButton={variant === "thread"}
               />

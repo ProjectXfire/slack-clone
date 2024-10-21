@@ -30,6 +30,7 @@ li {
     /* My own variables */
 
     --bg-color: rgb(46, 0, 82);
+    --bg-color-2: rgb(219, 211, 188);
     --bg-hover: rgb(120, 19, 197);
     --bg-color-light: rgb(149, 59, 218);
     --bg-color-light-2: rgb(244, 230, 255);
