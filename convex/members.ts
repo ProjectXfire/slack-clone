@@ -88,3 +88,16 @@ export const create = mutation({
 export function populateMember(ctx: QueryCtx, id: Id<"members">) {
   return ctx.db.get(id);
 }
+
+export function getMember(
+  ctx: QueryCtx,
+  workspaceId: Id<"workspaces">,
+  userId: Id<"users">
+): Promise<Doc<"members"> | null> {
+  return ctx.db
+    .query("members")
+    .withIndex("by_workspace_id_user_id", (q) =>
+      q.eq("workspaceId", workspaceId).eq("userId", userId)
+    )
+    .unique();
+}

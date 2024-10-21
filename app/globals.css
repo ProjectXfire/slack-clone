@@ -35,7 +35,9 @@ li {
     --bg-color-light: rgb(149, 59, 218);
     --bg-color-light-2: rgb(244, 230, 255);
     --bg-color-light-3: rgb(189, 163, 211);
+    --bg-color-light-4: rgba(109, 40, 136, 0.2);
     --bg-avatar: rgb(225, 207, 238);
+    --white: rgb(255, 255, 255);
 
     /* Tailwind variables */
 

@@ -34,6 +34,12 @@
   }
 }
 
+.message-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 .message-time {
   width: 100%;
   display: flex;
