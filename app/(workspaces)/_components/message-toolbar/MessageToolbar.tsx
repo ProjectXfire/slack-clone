@@ -24,7 +24,7 @@ function MessageToolbar({
   hideThreadButton,
 }: Props): JSX.Element {
   return (
-    <div>
+    <div className={styles.container}>
       <EmojiPopover hint="Add reaction" onEmojiSelect={handleReactions}>
         <Button
           className={styles["icon-button"]}
@@ -46,6 +46,7 @@ function MessageToolbar({
             name="toolbar-thread"
             disabled={isPending}
             size="sm"
+            onClick={handleThread}
           >
             <MessageSquareText />
           </Button>
@@ -61,6 +62,7 @@ function MessageToolbar({
               name="toolbar-edit"
               disabled={isPending}
               size="sm"
+              onClick={handleEdit}
             >
               <Pencil />
             </Button>
@@ -73,6 +75,7 @@ function MessageToolbar({
               name="toolbar-trash"
               disabled={isPending}
               size="sm"
+              onClick={handleDelete}
             >
               <Trash />
             </Button>

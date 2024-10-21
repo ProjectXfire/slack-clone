@@ -124,6 +124,53 @@ export const create = mutation({
   },
 });
 
+export const update = mutation({
+  args: {
+    id: v.string(),
+    body: v.string(),
+  },
+  handler: async (ctx, args): Promise<IResponse<string | null>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) return { isError: true, message: "User ID not found", data: null };
+      const messageId = ctx.db.normalizeId("messages", args.id);
+      if (!messageId) return { isError: true, message: "Invalid message ID", data: null };
+      const message = await ctx.db.get(messageId);
+      if (!message) return { isError: true, message: "Message not found", data: null };
+      const member = await getMember(ctx, message.workspaceId, userId);
+      if (!member || member._id !== message.memberId)
+        return { isError: true, message: "Unauthorized", data: null };
+      await ctx.db.patch(messageId, { body: args.body, updatedAt: Date.now() });
+      return { isError: false, message: "Message updated", data: messageId };
+    } catch {
+      return { isError: true, message: "Failed to update the data", data: null };
+    }
+  },
+});
+
+export const remove = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args): Promise<IResponse<string | null>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) return { isError: true, message: "User ID not found", data: null };
+      const messageId = ctx.db.normalizeId("messages", args.id);
+      if (!messageId) return { isError: true, message: "Invalid message ID", data: null };
+      const message = await ctx.db.get(messageId);
+      if (!message) return { isError: true, message: "Message not found", data: null };
+      const member = await getMember(ctx, message.workspaceId, userId);
+      if (!member || member._id !== message.memberId)
+        return { isError: true, message: "Unauthorized", data: null };
+      await ctx.db.delete(messageId);
+      return { isError: false, message: "Message deleted", data: messageId };
+    } catch {
+      return { isError: true, message: "Failed to delete message", data: null };
+    }
+  },
+});
+
 function getMember(
   ctx: QueryCtx,
   workspaceId: Id<"workspaces">,

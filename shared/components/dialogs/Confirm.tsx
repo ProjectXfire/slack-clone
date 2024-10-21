@@ -43,7 +43,7 @@ export function useConfirm({
   };
 
   const ConfirmDialog = (): JSX.Element => (
-    <Dialog open={promise !== null}>
+    <Dialog open={promise !== null} onOpenChange={handleCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
