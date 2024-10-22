@@ -188,7 +188,7 @@ function MemberMessage({
       className={`${styles.message} ${isEditing ? styles["message-editing"] : styles["message-no-editing"]} ${isPendingDeleteMessage && styles["message-removing"]}`}
     >
       <div className={styles["message-user"]}>
-        <button type="button" name="message-user">
+        <button className={styles["message-user-button"]} type="button" name="message-user">
           <Avatar className={styles["message-user-avatar"]}>
             <AvatarImage src={authorImage} />
             <AvatarFallback>

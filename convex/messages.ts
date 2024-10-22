@@ -48,7 +48,7 @@ export const get = query({
             .eq("parentMessageId", parentMessageId)
             .eq("conversationId", conversationId)
         )
-        .order("asc")
+        .order("desc")
         .paginate(args.paginationOpts);
       const messages = [];
       for (const message of results.page) {

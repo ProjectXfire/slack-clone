@@ -9,10 +9,15 @@ export function messsagesByDate(data: Message[]) {
       if (!groups[dateKey]) {
         groups[dateKey] = [];
       }
-      groups[dateKey].push(message);
+      groups[dateKey].unshift(message);
       return groups;
     },
     {} as Record<string, Message[]>
   );
+  /*const reversedKeys = Object.keys(groupedMessages).reverse();
+  const groupedMessagesReversed: Record<string, Message[]> = {};
+  for (const key of reversedKeys) {
+    groupedMessagesReversed[key] = groupedMessages[key];
+  }*/
   return groupedMessages;
 }

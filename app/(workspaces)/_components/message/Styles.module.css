@@ -43,10 +43,13 @@
 .message-time {
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .message-time-button {
+  width: 40px;
+  display: flex;
+  justify-content: flex-start;
   align-self: flex-start;
   opacity: 0;
   font-size: 0.8rem;
@@ -65,10 +68,12 @@
 .message-user {
   width: 100%;
   display: flex;
-  gap: 15.5px;
+  gap: 5px;
 }
 
-.message-user button {
+.message-user-button {
+  padding-top: 3px;
+  width: 40px;
   align-self: flex-start;
 }
 

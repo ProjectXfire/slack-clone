@@ -36,9 +36,9 @@ function MessageList({
   variant = "channel",
   canLoadMore,
 }: Props): JSX.Element {
-  const messagesGrouped = messsagesByDate(data);
   const [isEditing, setIsEditing] = useState<null | string>(null);
   const { refTarget, isIntersected } = useInfiniteScrollObserver();
+  const messagesGrouped = messsagesByDate(data);
   const workspaceId = useWorkspaceId();
   const { response } = useCurrentMember(workspaceId);
 
@@ -47,14 +47,13 @@ function MessageList({
   };
 
   useEffect(() => {
-    if (isIntersected && canLoadMore) loadMore();
-  }, [isIntersected]);
+    if (isIntersected && canLoadMore) {
+      loadMore();
+    }
+  }, [isIntersected, canLoadMore]);
 
   return (
     <ul className={styles.container}>
-      {variant === "channel" && channelName && channelCreationTime && (
-        <ChannelHero name={channelName} creationTime={channelCreationTime} />
-      )}
       {Object.entries(messagesGrouped).map(([key, messages]) => (
         <li key={key}>
           <SeparatorLabel label={formatDateLabel(key)} />
@@ -90,12 +89,15 @@ function MessageList({
           })}
         </li>
       ))}
-      <div ref={refTarget} />
       {isLoadingMore && (
         <div className={styles["loader-container"]}>
           <Loader size={25} />
         </div>
       )}
+      {variant === "channel" && channelName && channelCreationTime && (
+        <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
+      <div ref={refTarget} />
     </ul>
   );
 }
