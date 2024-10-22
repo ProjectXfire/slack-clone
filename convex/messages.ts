@@ -48,7 +48,7 @@ export const get = query({
             .eq("parentMessageId", parentMessageId)
             .eq("conversationId", conversationId)
         )
-        .order("desc")
+        .order("asc")
         .paginate(args.paginationOpts);
       const messages = [];
       for (const message of results.page) {
@@ -58,7 +58,7 @@ export const get = query({
         const thread = await populateThread(ctx, message._id);
         const image = message.image ? await ctx.storage.getUrl(message.image) : undefined;
         const countReactions = handleCountReactions(reactions);
-        messages.unshift({ ...message, member: user, image, reactions: countReactions, thread });
+        messages.push({ ...message, member: user, image, reactions: countReactions, thread });
       }
       return { ...results, page: messages };
     } catch {
