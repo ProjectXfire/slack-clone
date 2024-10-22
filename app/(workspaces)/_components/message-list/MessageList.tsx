@@ -5,12 +5,13 @@ import { differenceInMinutes } from "date-fns";
 import styles from "./Styles.module.css";
 import { messsagesByDate } from "@/core/messages/mappers";
 import { formatDateLabel } from "@/shared/utils";
-import { SeparatorLabel } from "@/shared/components";
+import { Loader, SeparatorLabel } from "@/shared/components";
 import MemberMessage from "../message/MemberMessage";
 import ChannelHero from "../channel-hero/ChannelHero";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentMember } from "@/core/members/services";
 import { useWorkspaceId } from "../../_hooks";
+import { useInfiniteScrollObserver } from "@/shared/hooks";
 
 interface Props {
   memberName?: string;
@@ -33,15 +34,21 @@ function MessageList({
   loadMore,
   isLoadingMore,
   variant = "channel",
+  canLoadMore,
 }: Props): JSX.Element {
   const messagesGrouped = messsagesByDate(data);
   const [isEditing, setIsEditing] = useState<null | string>(null);
+  const { refTarget, isIntersected } = useInfiniteScrollObserver();
   const workspaceId = useWorkspaceId();
   const { response } = useCurrentMember(workspaceId);
 
   const handleEditing = (id: string | null): void => {
     setIsEditing(id);
   };
+
+  useEffect(() => {
+    if (isIntersected && canLoadMore) loadMore();
+  }, [isIntersected]);
 
   return (
     <ul className={styles.container}>
@@ -83,6 +90,12 @@ function MessageList({
           })}
         </li>
       ))}
+      <div ref={refTarget} />
+      {isLoadingMore && (
+        <div className={styles["loader-container"]}>
+          <Loader size={25} />
+        </div>
+      )}
     </ul>
   );
 }

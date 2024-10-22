@@ -7,7 +7,7 @@ interface Options {
   parentMessageId?: string;
 }
 
-const BATCH_SIZE = 20;
+const BATCH_SIZE = 3;
 
 export function useGetMessages({ channelId, conversationId, parentMessageId }: Options) {
   const { results, isLoading, loadMore, status } = usePaginatedQuery(
