@@ -14,10 +14,5 @@ export function messsagesByDate(data: Message[]) {
     },
     {} as Record<string, Message[]>
   );
-  /*const reversedKeys = Object.keys(groupedMessages).reverse();
-  const groupedMessagesReversed: Record<string, Message[]> = {};
-  for (const key of reversedKeys) {
-    groupedMessagesReversed[key] = groupedMessages[key];
-  }*/
   return groupedMessages;
 }

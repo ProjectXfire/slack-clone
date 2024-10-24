@@ -25,6 +25,6 @@ export interface Message {
   parentMessageId?: Id<"messages">;
   member: User | null;
   reactions: Reactions[];
-  thread: Thread;
+  thread?: Thread;
   updatedAt?: number;
 }

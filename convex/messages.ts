@@ -67,6 +67,43 @@ export const get = query({
   },
 });
 
+export const getOne = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args): Promise<IResponse<Message | null>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) return { isError: true, message: "User ID not found", data: null };
+      const messageId = ctx.db.normalizeId("messages", args.id);
+      if (!messageId) return { isError: true, message: "Invalid message ID", data: null };
+      const message = await ctx.db.get(messageId);
+      if (!message) return { isError: true, message: "Message no found", data: null };
+      const isCurrentMember = await getMember(ctx, message.workspaceId, userId);
+      if (!isCurrentMember) return { isError: true, message: "Unauthorized", data: null };
+      const member = await populateMember(ctx, message.memberId);
+      if (!member) return { isError: true, message: "Unauthorized", data: null };
+      const user = await pupulateUser(ctx, member.userId);
+      if (!user) return { isError: true, message: "Unauthorized", data: null };
+      const reactions = await populateReactions(ctx, messageId);
+      const countReactions = handleCountReactions(reactions);
+      let image = undefined;
+      if (message.image) {
+        image = await ctx.storage.getUrl(message.image);
+      }
+      const messageFull = {
+        ...message,
+        image,
+        member: user,
+        reactions: countReactions,
+      };
+      return { isError: false, message: "Message successfully loaded", data: messageFull };
+    } catch {
+      return { isError: true, message: "Failed to get the data", data: null };
+    }
+  },
+});
+
 export const create = mutation({
   args: {
     body: v.string(),
