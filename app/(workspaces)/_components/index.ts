@@ -25,6 +25,7 @@ export { default as SidebarContentHeader } from "./sidebar/SidebarContentHeader"
 export { default as SidebarItem } from "./sidebar/SidebarItem";
 export { default as SidebarMember } from "./sidebar/SidebarMember";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
+export { default as Thread } from "./thread/Thread";
 export { default as Toolbar } from "./toolbar/Toolbar";
 export { default as WorkspaceJoin } from "./workspace-join/WorkspaceJoin";
 export { default as WorkspacePreference } from "./workspace-preference/WorkspacePreference";

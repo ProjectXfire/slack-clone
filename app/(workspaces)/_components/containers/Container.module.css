@@ -75,5 +75,5 @@
   height: calc(100dvh - 50px);
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto 1fr auto;
 }

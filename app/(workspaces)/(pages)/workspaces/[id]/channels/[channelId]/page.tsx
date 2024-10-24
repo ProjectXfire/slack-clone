@@ -29,7 +29,6 @@ function ChannelPage() {
         channelId={resp.data!._id}
         workspaceId={resp.data!.workspaceId}
       />
-      <div />
       <MessageList
         channelName={resp.data!.name}
         channelCreationTime={resp.data!._creationTime}
