@@ -1,29 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { useCurrentMember } from "@/core/members/services";
-import { useGetMessage } from "@/core/messages/services";
-import { useWorkspaceId } from "../../_hooks";
+import dynamic from "next/dynamic";
+import { useThread } from "./useThread";
 import styles from "./Styles.module.css";
 import { AlertCircle, X } from "lucide-react";
 import { Button, CustomAlert, Separator } from "@/shared/components";
 import MemberMessage from "../message/MemberMessage";
 import StartingLoader from "../loader/StartingLoader";
+import MessageList from "../message-list/MessageList";
 
 interface Props {
   messageId: string;
   onClose: () => void;
 }
 
-function Thread({ messageId, onClose }: Props): JSX.Element {
-  const workspaceId = useWorkspaceId();
-  const [isEditing, setIsEditing] = useState<null | string>(null);
-  const { response: message } = useGetMessage(messageId);
-  const { response: member } = useCurrentMember(workspaceId);
+const Editor = dynamic(() => import("@/shared/components/editor/Editor"), { ssr: false });
 
-  const handleEditing = (id: string | null): void => {
-    setIsEditing(id);
-  };
+function Thread({ messageId, onClose }: Props): JSX.Element {
+  const {
+    editorKey,
+    editorRef,
+    message,
+    member,
+    isEditing,
+    isLoading,
+    threadMessages,
+    status,
+    channel,
+    loadMore,
+    handleEditing,
+    handleSubmit,
+  } = useThread(messageId);
 
   if (message === undefined || member === undefined) return <StartingLoader reduceHeightIn={40} />;
 
@@ -60,20 +67,45 @@ function Thread({ messageId, onClose }: Props): JSX.Element {
         <Separator />
       </div>
       <div className={styles["thread-body"]}>
-        <MemberMessage
-          id={message.data!._id}
-          memberId={message.data!.memberId}
-          authorImage={message.data!.member?.image}
-          authorName={message.data!.member?.name}
-          isAuthor={member.data!._id === message.data!.memberId}
-          body={message.data!.body}
-          image={message.data!.image}
-          reactions={message.data!.reactions}
-          createdAt={message.data!._creationTime}
-          updatedAt={message.data!.updatedAt}
-          hideThreadButton
-          isEditing={isEditing === messageId}
-          setEditingId={handleEditing}
+        <div className={styles["thread-body__threads"]}>
+          {status === "LoadingFirstPage" || channel === undefined ? (
+            <StartingLoader />
+          ) : (
+            <>
+              <MessageList
+                channelName={channel.data!.name}
+                channelCreationTime={channel.data!._creationTime}
+                data={threadMessages}
+                loadMore={loadMore}
+                isLoadingMore={status === "LoadingMore"}
+                canLoadMore={status === "CanLoadMore"}
+                variant="thread"
+              />
+              <MemberMessage
+                id={message.data!._id}
+                memberId={message.data!.memberId}
+                authorImage={message.data!.member?.image}
+                authorName={message.data!.member?.name}
+                isAuthor={member.data!._id === message.data!.memberId}
+                body={message.data!.body}
+                image={message.data!.image}
+                reactions={message.data!.reactions}
+                createdAt={message.data!._creationTime}
+                updatedAt={message.data!.updatedAt}
+                hideThreadButton
+                isEditing={isEditing === messageId}
+                setEditingId={handleEditing}
+              />
+            </>
+          )}
+        </div>
+        <Editor
+          key={editorKey}
+          innerRef={editorRef}
+          placeholder="Reply..."
+          defaultValue={[]}
+          disabled={isLoading}
+          onSubmit={handleSubmit}
         />
       </div>
     </div>

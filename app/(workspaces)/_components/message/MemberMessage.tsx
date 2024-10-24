@@ -29,7 +29,7 @@ interface Props {
 }
 
 const RenderText = dynamic(() => import("../render-text/RenderText"), { ssr: false });
-const Editor = dynamic(() => import("@/shared/components/editor/Editor"));
+const Editor = dynamic(() => import("@/shared/components/editor/Editor"), { ssr: false });
 
 function MemberMessage({
   id,
@@ -40,7 +40,6 @@ function MemberMessage({
   createdAt,
   reactions,
   setEditingId,
-  thread,
   hideThreadButton,
   image,
   isAuthor,
