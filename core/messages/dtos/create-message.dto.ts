@@ -5,4 +5,5 @@ export interface CreateMessageDto {
   channelId: string;
   body: string;
   image?: Id<"_storage">;
+  parentMessageId?: string;
 }
