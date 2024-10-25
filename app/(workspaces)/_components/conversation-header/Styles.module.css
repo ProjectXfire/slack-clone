@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+}
+
+.conversation-options {
+  padding: 5px 10px;
+}
+
+.conversation-options-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+}
+
+.conversation-options-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conversation-options__image {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

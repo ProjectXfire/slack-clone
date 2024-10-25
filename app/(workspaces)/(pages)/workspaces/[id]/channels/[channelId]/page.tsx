@@ -37,7 +37,7 @@ function ChannelPage() {
         isLoadingMore={status === "LoadingMore"}
         canLoadMore={status === "CanLoadMore"}
       />
-      <ChatInput placeholder={`Message #${resp.data?.name}`} />
+      <ChatInput placeholder={`Message #${resp.data?.name}`} channelId={channelId} />
     </MessagesContent>
   );
 }

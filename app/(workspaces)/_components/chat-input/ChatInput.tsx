@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import Quill from "quill";
 import dynamic from "next/dynamic";
 import { useCreateMessage } from "@/core/messages/services";
-import { useChannelId, useWorkspaceId } from "../../_hooks";
+import { useWorkspaceId } from "../../_hooks";
 import { useToast } from "@/shared/hooks";
 import styles from "./Styles.module.css";
 import { FlexSpacer } from "@/shared/components";
@@ -16,14 +16,21 @@ const Editor = dynamic(() => import("@/shared/components/editor/Editor"), { ssr:
 
 interface Props {
   placeholder: string;
+  channelId?: string;
+  conversationId?: string;
+  parentMessageId?: string;
 }
 
-function ChatInput({ placeholder }: Props): JSX.Element {
+function ChatInput({
+  placeholder,
+  channelId,
+  conversationId,
+  parentMessageId,
+}: Props): JSX.Element {
   const [editorKey, setEditorKey] = useState(0);
   const editorRef = useRef<Quill | null>(null);
   const { toast } = useToast();
 
-  const channelId = useChannelId();
   const workspaceId = useWorkspaceId();
 
   const { mutate: createUrl, isPending: isPendingUrl } = useCreateUploadUrl();
@@ -36,6 +43,8 @@ function ChatInput({ placeholder }: Props): JSX.Element {
       channelId,
       body,
       image: undefined,
+      conversationId,
+      parentMessageId,
     };
     if (image) {
       const response = await createUrl({ throwError: true });

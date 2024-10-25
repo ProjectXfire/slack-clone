@@ -5,6 +5,7 @@ import { usePanel } from "../../_hooks";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/shared/components";
 import SidebarContent from "../sidebar/SidebarContent";
 import Thread from "../thread/Thread";
+import { useConversationId } from "../../_stores";
 
 interface Props {
   children: React.ReactNode;
@@ -12,8 +13,14 @@ interface Props {
 
 function ResizableContent({ children }: Props): JSX.Element {
   const { parentMessageId, onClose } = usePanel();
+  const [conversationId, setConversationId] = useConversationId();
 
   const showPanel = !!parentMessageId;
+
+  const closeThread = () => {
+    onClose();
+    setConversationId("");
+  };
 
   return (
     <ResizablePanelGroup direction="horizontal" autoSaveId="channel-panel">
@@ -28,7 +35,11 @@ function ResizableContent({ children }: Props): JSX.Element {
         <>
           <ResizableHandle withHandle />
           <ResizablePanel id="thread-panel" order={3} defaultSize={20} minSize={20}>
-            <Thread messageId={parentMessageId} onClose={onClose} />
+            <Thread
+              messageId={parentMessageId}
+              conversationId={conversationId}
+              onClose={closeThread}
+            />
           </ResizablePanel>
         </>
       )}

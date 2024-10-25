@@ -38,6 +38,32 @@ export const get = query({
   },
 });
 
+export const getOne = query({
+  args: { id: v.string() },
+  handler: async (ctx, args): Promise<IResponse<Member | null>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) return { isError: true, message: "User ID not found", data: null };
+      const memberId = ctx.db.normalizeId("members", args.id);
+      if (!memberId) return { isError: true, message: "Invalid member ID", data: null };
+      const member = await ctx.db.get(memberId);
+      if (!member) return { isError: true, message: "Member not found", data: null };
+      const currentMember = await ctx.db
+        .query("members")
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", member.workspaceId).eq("userId", member.userId)
+        )
+        .unique();
+      if (!currentMember) return { isError: true, message: "Invalid member", data: null };
+      const user = await pupulateUser(ctx, member.userId);
+      if (!user) return { isError: true, message: "User not found", data: null };
+      return { isError: false, message: "Member successfully loaded", data: { ...member, user } };
+    } catch {
+      return { isError: true, message: "Failed to load the data", data: null };
+    }
+  },
+});
+
 export const current = query({
   args: { workspaceId: v.string() },
   handler: async (ctx, args): Promise<IResponse<Doc<"members"> | null>> => {

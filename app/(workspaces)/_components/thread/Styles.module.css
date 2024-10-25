@@ -16,10 +16,10 @@
 
 .container {
   width: 100%;
-  height: 100%;
+  height: calc(100dvh - 50px);
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr auto;
 }
 
 .thread-header {
@@ -40,23 +40,4 @@
 
 .thread-header__content button {
   padding: 5px 6px;
-}
-
-.thread-body {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
-  scrollbar-color: var(--bg-hover) var(--bg-color);
-  scrollbar-width: thin;
-  overflow: auto;
-}
-
-.thread-body__threads {
-  display: flex;
-  flex-direction: column-reverse;
-  padding: 5px 0px;
-  overflow-y: auto;
-  scrollbar-color: var(--bg-hover) var(--bg-color);
-  scrollbar-width: thin;
 }
