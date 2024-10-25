@@ -13,6 +13,7 @@ import ReactedIcons from "../reacted-icons/ReactedIcons";
 interface Props {
   id: string;
   memberId: string;
+  conversationId?: string;
   authorImage?: string;
   authorName?: string;
   reactions: Reactions[];
@@ -34,6 +35,7 @@ const Editor = dynamic(() => import("@/shared/components/editor/Editor"), { ssr:
 function MemberMessage({
   id,
   memberId,
+  conversationId,
   authorName,
   authorImage,
   body,
@@ -55,7 +57,7 @@ function MemberMessage({
     handleReaction,
     handleUpdateMessage,
     handleThread,
-  } = useMemberMessage(id, setEditingId);
+  } = useMemberMessage({ id, setEditingId, conversationId });
 
   if (isCompact)
     return (

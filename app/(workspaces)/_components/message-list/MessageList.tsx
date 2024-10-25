@@ -1,28 +1,31 @@
 "use client";
 
 import type { Message } from "@/core/messages/models";
-import { differenceInMinutes } from "date-fns";
-import styles from "./Styles.module.css";
-import { messsagesByDate } from "@/core/messages/mappers";
-import { formatDateLabel } from "@/shared/utils";
-import { Loader, SeparatorLabel } from "@/shared/components";
-import MemberMessage from "../message/MemberMessage";
-import ChannelHero from "../channel-hero/ChannelHero";
 import { useEffect, useState } from "react";
+import { differenceInMinutes } from "date-fns";
+import MemberMessage from "../message/MemberMessage";
 import { useCurrentMember } from "@/core/members/services";
+import { messsagesByDate } from "@/core/messages/mappers";
 import { useWorkspaceId } from "../../_hooks";
 import { useInfiniteScrollObserver } from "@/shared/hooks";
+import { formatDateLabel } from "@/shared/utils";
+import styles from "./Styles.module.css";
+import { Loader, SeparatorLabel } from "@/shared/components";
+import ChannelHero from "../channel-hero/ChannelHero";
+import ConversationHero from "../conversation-hero/ConversationHero";
 
 interface Props {
   memberName?: string;
   memberImage?: string;
-  channelName: string;
-  channelCreationTime: number;
+  channelName?: string;
+  channelCreationTime?: number;
+  conversationId?: string;
   data: Message[];
   loadMore: () => void;
   isLoadingMore?: boolean;
   canLoadMore?: boolean;
   variant?: "channel" | "thread" | "conversation";
+  ThreadHeader?: React.ReactNode;
 }
 
 const TIME_THRESHOLD = 5;
@@ -35,6 +38,10 @@ function MessageList({
   isLoadingMore,
   variant = "channel",
   canLoadMore,
+  memberImage,
+  memberName,
+  conversationId,
+  ThreadHeader,
 }: Props): JSX.Element {
   const [isEditing, setIsEditing] = useState<null | string>(null);
   const { refTarget, isIntersected } = useInfiniteScrollObserver();
@@ -71,6 +78,7 @@ function MessageList({
                 key={msg._id}
                 id={msg._id}
                 memberId={msg.memberId}
+                conversationId={conversationId}
                 authorName={msg.member?.name}
                 authorImage={msg.member?.image}
                 reactions={msg.reactions}
@@ -97,6 +105,10 @@ function MessageList({
       {variant === "channel" && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
       )}
+      {variant === "conversation" && memberName && (
+        <ConversationHero name={memberName} image={memberImage} />
+      )}
+      {variant === "thread" && ThreadHeader && ThreadHeader}
       <div ref={refTarget} />
     </ul>
   );

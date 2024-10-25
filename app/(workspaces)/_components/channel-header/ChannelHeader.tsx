@@ -90,7 +90,7 @@ function ChannelHeader({ title, channelId, workspaceId }: Props): JSX.Element {
                 disabled={isPendingUpdate || isPendingRemove}
                 onClick={onDeleteChannel}
               >
-                <Trash /> Delete workspace
+                <Trash /> Delete channel
               </Button>
             </DialogContent>
           </Dialog>

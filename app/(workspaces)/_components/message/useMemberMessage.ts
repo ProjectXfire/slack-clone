@@ -3,13 +3,23 @@ import {
   useToggleReactMessage,
   useUpdateMessage,
 } from "@/core/messages/services";
-import { useConfirm } from "@/shared/components";
 import { useToast } from "@/shared/hooks";
 import { usePanel } from "../../_hooks";
+import { useConversationId } from "../../_stores";
+import { useConfirm } from "@/shared/components";
 
-export function useMemberMessage(id: string, setEditingId: (id: string | null) => void) {
+export function useMemberMessage({
+  id,
+  setEditingId,
+  conversationId,
+}: {
+  id: string;
+  setEditingId: (id: string | null) => void;
+  conversationId?: string;
+}) {
   const { toast } = useToast();
   const { onOpenMessage, onClose, parentMessageId } = usePanel();
+  const [, setConversationId] = useConversationId();
   const { mutate: updateMessage, isPending: isPendingUpdateMessage } = useUpdateMessage();
   const { mutate: deleteMessage, isPending: isPendingDeleteMessage } = useDeleteMessage();
   const { mutate: toggleMessageReaction, isPending: isPendingReaction } = useToggleReactMessage();
@@ -62,6 +72,7 @@ export function useMemberMessage(id: string, setEditingId: (id: string | null) =
 
   const handleThread = (): void => {
     onOpenMessage(id);
+    setConversationId(conversationId ?? "");
   };
 
   const handleDeleteMessage = async (): Promise<void> => {

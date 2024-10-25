@@ -1,3 +1,4 @@
+export * from "./create-get-conversation.service";
 export * from "./create-message.service";
 export * from "./delete-message.service";
 export * from "./get-message.service";
