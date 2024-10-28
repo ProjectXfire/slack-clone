@@ -59,7 +59,8 @@ function MemberMessage({
     handleReaction,
     handleUpdateMessage,
     handleThread,
-  } = useMemberMessage({ id, setEditingId, conversationId });
+    handleProfile,
+  } = useMemberMessage({ id, setEditingId, conversationId, memberId });
 
   if (isCompact)
     return (
@@ -142,7 +143,11 @@ function MemberMessage({
             ) : (
               <>
                 <div className={styles["message-fullname-header"]}>
-                  <button className={styles["message-fullname-header__name"]} type="button">
+                  <button
+                    className={styles["message-fullname-header__name"]}
+                    type="button"
+                    onClick={handleProfile}
+                  >
                     {authorName}
                   </button>
                   <Hint label={formatFullTime(new Date(createdAt))}>

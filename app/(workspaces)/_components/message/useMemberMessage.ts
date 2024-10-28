@@ -12,13 +12,15 @@ export function useMemberMessage({
   id,
   setEditingId,
   conversationId,
+  memberId,
 }: {
   id: string;
   setEditingId: (id: string | null) => void;
   conversationId?: string;
+  memberId: string;
 }) {
   const { toast } = useToast();
-  const { onOpenMessage, onClose, parentMessageId } = usePanel();
+  const { onOpenMessage, onClose, parentMessageId, onOpenProfile } = usePanel();
   const [, setConversationId] = useConversationId();
   const { mutate: updateMessage, isPending: isPendingUpdateMessage } = useUpdateMessage();
   const { mutate: deleteMessage, isPending: isPendingDeleteMessage } = useDeleteMessage();
@@ -75,6 +77,10 @@ export function useMemberMessage({
     setConversationId(conversationId ?? "");
   };
 
+  const handleProfile = (): void => {
+    onOpenProfile(memberId);
+  };
+
   const handleDeleteMessage = async (): Promise<void> => {
     const ok = await confirm();
     if (!ok) return;
@@ -109,5 +115,6 @@ export function useMemberMessage({
     handleDeleteMessage,
     isPendingDeleteMessage,
     handleThread,
+    handleProfile,
   };
 }
