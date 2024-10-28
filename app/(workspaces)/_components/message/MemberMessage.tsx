@@ -9,6 +9,7 @@ import styles from "./Styles.module.css";
 import { Avatar, AvatarFallback, AvatarImage, Hint, Thumbnail } from "@/shared/components";
 import MessageToolbar from "../message-toolbar/MessageToolbar";
 import ReactedIcons from "../reacted-icons/ReactedIcons";
+import ThreadBar from "../thread/ThreadBar";
 
 interface Props {
   id: string;
@@ -48,6 +49,7 @@ function MemberMessage({
   isCompact,
   isEditing,
   updatedAt,
+  thread,
 }: Props): JSX.Element {
   const {
     isPending,
@@ -87,6 +89,14 @@ function MemberMessage({
                 </div>
               )}
               <ReactedIcons reactions={reactions} memberId={memberId} onChange={handleReaction} />
+              {thread && !hideThreadButton && (
+                <ThreadBar
+                  count={thread.count}
+                  image={thread.image}
+                  timestamp={thread.timestamp}
+                  onClick={handleThread}
+                />
+              )}
               {updatedAt && <span className={styles["message__edit-message"]}>(edited)</span>}
             </div>
           </div>

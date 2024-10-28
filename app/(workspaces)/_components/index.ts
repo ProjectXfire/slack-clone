@@ -29,6 +29,7 @@ export { default as SidebarItem } from "./sidebar/SidebarItem";
 export { default as SidebarMember } from "./sidebar/SidebarMember";
 export { default as StartingWorkspaces } from "./starting-workspaces/StartingWorkspaces";
 export { default as Thread } from "./thread/Thread";
+export { default as ThreadBar } from "./thread/ThreadBar";
 export { default as ThreadChannel } from "./thread/ThreadChannel";
 export { default as ThreadConversation } from "./thread/ThreadConversation";
 export { default as Toolbar } from "./toolbar/Toolbar";
