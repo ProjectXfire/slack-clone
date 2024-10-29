@@ -7,20 +7,26 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/shared/c
 import SidebarContent from "../sidebar/SidebarContent";
 import Thread from "../thread/Thread";
 import Profile from "../profile/Profile";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: React.ReactNode;
 }
 
 function ResizableContent({ children }: Props): JSX.Element {
+  const router = useRouter();
   const { parentMessageId, profileMemberId, onClose } = usePanel();
   const [conversationId, setConversationId] = useConversationId();
 
   const showPanel = !!parentMessageId || !!profileMemberId;
 
-  const closeThread = () => {
+  const closePanel = () => {
     onClose();
     setConversationId("");
+  };
+
+  const onDelete = () => {
+    router.replace("/");
   };
 
   return (
@@ -40,10 +46,12 @@ function ResizableContent({ children }: Props): JSX.Element {
               <Thread
                 messageId={parentMessageId}
                 conversationId={conversationId}
-                onClose={closeThread}
+                onClose={closePanel}
               />
             )}
-            {profileMemberId && <Profile memberId={profileMemberId} onClose={closeThread} />}
+            {profileMemberId && (
+              <Profile memberId={profileMemberId} onClose={closePanel} onDelete={onDelete} />
+            )}
           </ResizablePanel>
         </>
       )}

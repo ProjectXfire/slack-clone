@@ -40,6 +40,7 @@ export const get = query({
         if (!parentMessage) throw new Error("Parent message not found");
         conversationId = parentMessage.conversationId;
       }
+
       const results = await ctx.db
         .query("messages")
         .withIndex("by_channel_id_parent_message_id_conversation_id", (q) =>

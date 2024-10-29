@@ -37,15 +37,15 @@ export const getOne = query({
       const userId = await getAuthUserId(ctx);
       if (!userId) return { isError: true, message: "User ID not found", data: null };
       const channelId = ctx.db.normalizeId("channels", args.channelId);
-      if (!channelId) return { isError: false, message: "Invalid channel ID", data: null };
+      if (!channelId) return { isError: true, message: "Invalid channel ID", data: null };
       const channel = await ctx.db.get(channelId);
-      if (!channel) return { isError: false, message: "Channel not found", data: null };
+      if (!channel) return { isError: true, message: "Channel not found", data: null };
       const member = ctx.db
         .query("members")
         .withIndex("by_workspace_id_user_id", (q) =>
           q.eq("workspaceId", channel.workspaceId).eq("userId", userId)
         );
-      if (!member) return { isError: false, message: "Invalid member", data: null };
+      if (!member) return { isError: true, message: "Member not found", data: null };
       return { isError: false, message: "Channel successfully loaded", data: channel };
     } catch {
       return { isError: true, message: "Failed to load the data", data: null };

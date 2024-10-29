@@ -1,7 +1,6 @@
 "use client";
 
 import NextImage from "next/image";
-import { useRouter } from "next/navigation";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useGetUser } from "@/core/auth/services";
 import UserDefaultImage from "@/shared/assets/images/user-default.png";
@@ -20,11 +19,10 @@ import {
 function UserButton(): JSX.Element {
   const { data, isLoading } = useGetUser();
   const { signOut } = useAuthActions();
-  const router = useRouter();
 
   const onSignOut = async () => {
     await signOut();
-    router.push("/auth");
+    window.location.href = "/";
   };
 
   if (isLoading) return <Loader />;

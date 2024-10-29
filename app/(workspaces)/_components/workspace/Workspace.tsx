@@ -8,7 +8,6 @@ import { useCurrentMember } from "@/core/members/services";
 import { useWorkspaceId } from "../../_hooks";
 import { useCreateChannelModal } from "../../_stores";
 import StartingLoader from "../loader/StartingLoader";
-import WorkspaceContentError from "../content-error/WorkspaceContentError";
 
 function Workspace() {
   const router = useRouter();
@@ -52,12 +51,6 @@ function Workspace() {
   )
     return <StartingLoader />;
 
-  return (
-    <>
-      {responseMember?.data?.role === "member" && (
-        <WorkspaceContentError description="Channel does not exist" />
-      )}
-    </>
-  );
+  return <StartingLoader />;
 }
 export default Workspace;

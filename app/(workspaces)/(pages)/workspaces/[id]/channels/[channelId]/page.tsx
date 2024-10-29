@@ -19,8 +19,7 @@ function ChannelPage() {
   const { results, status, loadMore } = useGetMessages({ channelId });
 
   if (resp === undefined || status === "LoadingFirstPage") return <StartingLoader />;
-  if (!resp.isError && !resp.data) return redirect("/");
-  if (resp.isError) redirect("/error");
+  if (resp.isError) redirect("/");
 
   return (
     <MessagesContent>

@@ -111,6 +111,90 @@ export const create = mutation({
   },
 });
 
+export const update = mutation({
+  args: {
+    id: v.string(),
+    role: v.union(v.literal("admin"), v.literal("member")),
+  },
+  handler: async (ctx, args): Promise<IResponse<null | string>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) throw new Error("User ID not found");
+      const memberId = ctx.db.normalizeId("members", args.id);
+      if (!memberId) throw new Error("Invalid member ID");
+      const member = await ctx.db.get(memberId);
+      if (!member) return { isError: true, message: "Member not found", data: null };
+      const currentMember = await ctx.db
+        .query("members")
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", member.workspaceId).eq("userId", userId)
+        )
+        .unique();
+      if (!currentMember) return { isError: true, message: "Unauthorized", data: null };
+      await ctx.db.patch(memberId, { role: args.role });
+      return { isError: false, message: "Member updated", data: memberId };
+    } catch {
+      return { isError: true, message: "Failed to update the data", data: null };
+    }
+  },
+});
+
+export const remove = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args): Promise<IResponse<null | string>> => {
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (!userId) throw new Error("User ID not found");
+      const memberId = ctx.db.normalizeId("members", args.id);
+      if (!memberId) throw new Error("Invalid member ID");
+      const member = await ctx.db.get(memberId);
+      if (!member) return { isError: true, message: "Member not found", data: null };
+      const currentMember = await ctx.db
+        .query("members")
+        .withIndex("by_workspace_id_user_id", (q) =>
+          q.eq("workspaceId", member.workspaceId).eq("userId", userId)
+        )
+        .unique();
+      if (!currentMember) return { isError: true, message: "Unauthorized", data: null };
+      if (member.role === "admin")
+        return { isError: true, message: "Admin cannot be removed", data: null };
+      if (currentMember._id === memberId && currentMember.role === "admin")
+        return { isError: true, message: "Cannot remove self if self is an admin", data: null };
+      const [messages, reactions, conversations] = await Promise.all([
+        ctx.db
+          .query("messages")
+          .withIndex("by_member_id", (q) => q.eq("memberId", memberId))
+          .collect(),
+        ctx.db
+          .query("reactions")
+          .withIndex("by_member_id", (q) => q.eq("memberId", memberId))
+          .collect(),
+        ctx.db
+          .query("conversations")
+          .filter((q) =>
+            q.or(q.eq(q.field("memberOneId"), member._id), q.eq(q.field("memberTwoId"), member._id))
+          )
+          .collect(),
+      ]);
+      for (const msg of messages) {
+        await ctx.db.delete(msg._id);
+      }
+      for (const rtc of reactions) {
+        await ctx.db.delete(rtc._id);
+      }
+      for (const con of conversations) {
+        await ctx.db.delete(con._id);
+      }
+      await ctx.db.delete(memberId);
+      return { isError: false, message: "Member removed", data: memberId };
+    } catch {
+      return { isError: true, message: "Failed to remove the data", data: null };
+    }
+  },
+});
+
 export function populateMember(ctx: QueryCtx, id: Id<"members">) {
   return ctx.db.get(id);
 }
