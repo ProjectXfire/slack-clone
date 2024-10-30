@@ -25,7 +25,6 @@ function SidebarContent(): JSX.Element {
   const { response: responseMember } = useCurrentMember(workspaceId);
   const { response: responseChannels } = useGetChannels(workspaceId);
   const { response: responseMembers } = useGetMembers(workspaceId);
-  const { response: responseCurrentMember } = useCurrentMember(workspaceId);
 
   const onOpenCreateChannelModal = (): void => {
     if (responseMember?.data?.role === "admin") setState({ workspaceId, isOpen: true });
@@ -35,8 +34,7 @@ function SidebarContent(): JSX.Element {
     responseWorkspace === undefined ||
     responseMember === undefined ||
     responseChannels === undefined ||
-    responseMembers === undefined ||
-    responseCurrentMember === undefined
+    responseMembers === undefined
   )
     return (
       <div className={styles["sidebar-content-center"]}>
@@ -48,16 +46,11 @@ function SidebarContent(): JSX.Element {
     responseWorkspace.isError ||
     responseMember.isError ||
     responseChannels.isError ||
-    responseMembers.isError ||
-    responseCurrentMember.isError
+    responseMembers.isError
   )
     redirect("/");
 
-  if (
-    responseWorkspace.data === null ||
-    responseMember.data === null ||
-    responseCurrentMember.data === null
-  )
+  if (responseWorkspace.data === null || responseMember.data === null)
     return (
       <div className={styles["sidebar-content"]}>
         <div className={`${styles["sidebar-content-center"]}`}>
@@ -70,10 +63,6 @@ function SidebarContent(): JSX.Element {
         </div>
       </div>
     );
-
-  const members = responseMembers.data.filter(
-    (member) => member._id !== responseCurrentMember.data?._id
-  );
 
   return (
     <div className={styles["sidebar-content"]}>
@@ -101,7 +90,7 @@ function SidebarContent(): JSX.Element {
           ))}
         </WorkspaceSection>
         <WorkspaceSection label="Direct Messages" hint="New direct message" onNew={() => {}}>
-          {members.map((item) => (
+          {responseMembers.data.map((item) => (
             <SidebarMember
               key={item._id}
               image={item.user?.image}

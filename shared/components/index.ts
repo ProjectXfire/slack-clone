@@ -16,6 +16,7 @@ export * from "./ui/Alert";
 export * from "./ui/Avatar";
 export * from "./ui/Button";
 export * from "./ui/Card";
+export * from "./ui/Command";
 export * from "./ui/Dialog";
 export * from "./ui/DropdownMenu";
 export * from "./ui/Form";
