@@ -26,8 +26,9 @@ export const get = query({
         .query("members")
         .withIndex("by_workspace_id", (q) => q.eq("workspaceId", workspaceId))
         .collect();
+      const membersWithoutMe = members.filter((m) => m._id !== member._id);
       const membersWithUser = [];
-      for (const item of members) {
+      for (const item of membersWithoutMe) {
         const user = await pupulateUser(ctx, item.userId);
         if (user) membersWithUser.push({ ...item, user });
       }
