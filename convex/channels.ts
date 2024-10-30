@@ -124,6 +124,15 @@ export const remove = mutation({
         .unique();
       if (!member || member.role !== "admin")
         return { isError: true, message: "Unauthorized", data: null };
+      const [messages] = await Promise.all([
+        ctx.db
+          .query("messages")
+          .withIndex("by_channel_id", (q) => q.eq("channelId", channelId))
+          .collect(),
+      ]);
+      for (const message of messages) {
+        await ctx.db.delete(message._id);
+      }
       await ctx.db.delete(channelId);
       return { isError: false, message: "Channel deleted", data: args.channelId };
     } catch {

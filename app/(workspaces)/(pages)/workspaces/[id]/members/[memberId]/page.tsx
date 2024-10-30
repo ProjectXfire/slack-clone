@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useCreateOrGetConversation } from "@/core/messages/services";
 import { useGetMember } from "@/core/members/services";
-import { useMemberId, useWorkspaceId } from "@/app/(workspaces)/_hooks";
+import { useMemberId, usePanel, useWorkspaceId } from "@/app/(workspaces)/_hooks";
 import { useToast } from "@/shared/hooks";
 import {
   ChatInput,
@@ -17,11 +17,16 @@ import {
 function MemberPage() {
   const memberId = useMemberId();
   const workspaceId = useWorkspaceId();
+  const { onOpenProfile } = usePanel();
 
   const { toast } = useToast();
 
   const { mutate, isPending, data, error } = useCreateOrGetConversation();
   const { response } = useGetMember(memberId);
+
+  const handleProfile = (): void => {
+    onOpenProfile(memberId);
+  };
 
   useEffect(() => {
     mutate(
@@ -49,7 +54,7 @@ function MemberPage() {
       <ConversationHeader
         name={response.data.user.name}
         image={response.data.user.image}
-        onClick={() => {}}
+        onClick={handleProfile}
       />
       <Conversation conversationId={data} member={response.data} />
       <ChatInput placeholder={`Message ${response.data.user.name}`} conversationId={data} />
