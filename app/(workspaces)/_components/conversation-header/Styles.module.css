@@ -3,14 +3,26 @@
 }
 
 .conversation-options {
+  width: 100%;
   padding: 5px 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-items: flex-start;
+  overflow: hidden;
 }
 
-.conversation-options-button {
+.conversation-option {
+  width: 100%;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 0 8px;
+  overflow: hidden;
+}
+
+.conversation-option__icon {
+  width: 20px;
+  flex-shrink: 0;
 }
 
 .conversation-options-avatar {
@@ -25,4 +37,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.conversation-options__name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

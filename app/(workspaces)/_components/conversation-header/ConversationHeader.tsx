@@ -16,7 +16,7 @@ function ConversationHeader({ name = "No name", image, onClick }: Props): JSX.El
     <header className={styles.container}>
       <div className={styles["conversation-options"]}>
         <Button
-          className={styles["conversation-options-button"]}
+          className={styles["conversation-option"]}
           type="button"
           variant="ghost"
           onClick={onClick}
@@ -31,7 +31,8 @@ function ConversationHeader({ name = "No name", image, onClick }: Props): JSX.El
               {formatName(name ?? "MB")}
             </AvatarFallback>
           </Avatar>
-          <strong>{name}</strong> <FaChevronDown />
+          <p className={styles["conversation-options__name"]}>{name}</p>
+          <FaChevronDown className={styles["conversation-option__icon"]} />
         </Button>
       </div>
       <Separator />
